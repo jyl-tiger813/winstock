@@ -1,0 +1,12 @@
+create table sse.StockFirstDayInfo(
+stockNum VARCHAR(45) NOT NULL,
+  stockName VARCHAR(45) NOT NULL,
+  issueTime timestamp NOT NULL,
+  toMarketTime timestamp NOT NULL,
+  issueAmount INTEGER UNSIGNED NOT NULL,
+  netIssueAmount INTEGER UNSIGNED NOT NULL,
+  issuePrice FLOAT NOT NULL,
+  ratio FLOAT NOT NULL,
+  integrySym BOOLEAN NOT NULL,
+  PRIMARY KEY (stockNum)
+)

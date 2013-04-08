@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="winStock" default="dist" basedir=".">
+	<description>
+	股票信息收集和分析
+	</description>
+
+	<property name="src" location="java" />
+	<property name="lib" location="lib" />
+	<property name="build" location="build" />
+	<property name="build.classes" location="${build}/classes" />
+	<property name="build.dist" location="${build}/dist" />
+	<property name="build.dist.login" location="${build.dist}/login" />
+	<property name="build.dist.game" location="${build.dist}/gameserver" />
+	<property name="build.dist.libs" location="${build.dist}/libs" />
+	<property name="build.dist.languages" location="${build.dist}/languages" />
+	<property name="build.dist.images" location="${build.dist}/images" />
+	<property name="build.dist.doc" location="${build.dist}/doc" />
+
+	<path id="classpath">
+		<fileset dir="${lib}">
+			
+		</fileset>
+	</path>
+</project>

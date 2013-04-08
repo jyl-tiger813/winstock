@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--对于每部分内容都有用的xml最好使用dom解析  --><sse>
+<firsttime>false</firsttime><!--是否第一次抓取  -->
+<!-- 线程池配置 -->
+<threadpool>
+<corenum>5</corenum>
+<maxnum>8</maxnum>
+<keepAliveTime>1</keepAliveTime>
+<queuesize>9</queuesize>
+</threadpool>
+<timeout>10000</timeout>
+<time>
+    <starttime>1999-01-3</starttime>
+    <endtime>2010-06-04</endtime>
+    <begintime>2012-06-11</begintime><!--非第一次抓取,作为启动时间,抓取完成后把时间回写到这里-->
+</time>
+</sse>

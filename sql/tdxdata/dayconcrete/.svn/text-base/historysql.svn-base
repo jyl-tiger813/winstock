@@ -1,0 +1,81 @@
+SELECT DATE_FORMAT(changetime,'%Y-%m') as m,
+changetime,(sum(buyvolumn)-sum(sellvolumn))/sum(totalvolumn) ra,
+sum(upAndDownThisDay),avg(totalup),avg(totaldown) at
+FROM `tdxhistory`.`data_szag`
+where upAndDownThisDay >-0.15
+group by m order by m
+
+
+按周统计
+SELECT DATE_FORMAT(changetime,'%Y-%v') as m,
+(sum(buyvolumn)-sum(sellvolumn))/sum(totalvolumn) ra
+FROM `tdxhistory`.`data_szag`
+group by m order by m
+
+
+参考
+SELECT DATE_FORMAT(ec_salesorder.duedate,'%x %v') as m, sum(ec_salesorder.total) as total,
+ count(*) as so_count FROM ec_salesorder GROUP BY m ORDER BY m
+ 
+ SELECT (sum(buyvolumn)-sum(sellvolumn))/sum(totalvolumn) ra,sum(upAndDownThisDay),avg(totalup),avg(totaldown)
+FROM `tdxhistory`.`data_szag`
+where upAndDownThisDay >-0.15 and
+changetime >'20100507' and changetime <'20100701'
+
+创新低后成交活跃可以考虑买入
+SELECT changetime,buyvolumn,sellvolumn,totalvolumn,
+(buyvolumn-sellvolumn)/totalvolumn,totalup,totaldown
+ FROM `tdxhistory`.`data_szag`
+ 
+ SELECT changetime,buyvolumn,sellvolumn,totalvolumn,
+(buyvolumn-sellvolumn)/totalvolumn,totalup,totaldown
+ FROM `tdxhistory`.`data_szag` where
+ totaldown <=-1.0 and
+  changetime >= '2007-12-30' and changetime <='20080514'
+  
+  SELECT changetime,(buyvolumn1-sellvolumn1)/totalvolumn ,totalUp,totalDown,
+FROM `tdxhistory`.`data_szag`
+ 
+ 
+ SELECT DATE_FORMAT(changetime,'%Y-%m') as m,
+changetime,(sum(buyvolumn)-sum(sellvolumn))/sum(totalvolumn) bs,
+(sum(buyvolumn1)-sum(sellvolumn1))/sum(totalvolumn) bs1,
+(sum(buyvolumn4)-sum(sellvolumn4))/sum(totalvolumn) bs2,
+avg(totalup),avg(totaldown) at
+FROM `tdxhistory`.`data_szag`
+where stockcode ='000002'
+group by m order by m
+
+SELECT stockcode, changetime,(buyvolumn1-sellvolumn1)/totalvolumn ,totalUp,totalDown
+FROM `tdxhistory`.`data_szag`
+ where totalDown < '-0.9' and changetime >'20100723'
+order by stockcode
+
+ SELECT changetime,(buyvolumn-sellvolumn)/totalvolumn bs,
+(buyvolumn1-sellvolumn1-buyvolumn3+sellvolumn3)/totalvolumn bs1,
+(buyvolumn2-sellvolumn2-buyvolumn4+sellvolumn4)/totalvolumn bs2,
+totalup,totaldown at
+FROM `tdxhistory`.`data_szag`
+where stockcode ='000002'
+
+SELECT changetime,totalDown,totalDown10,totalDown50,totalDown100,totalDown250
+FROM `tdxhistory`.`data_szag`
+where stockcode ='000002'
+ 
+ 删除无效数据
+ delete FROM `tdxhistory`.`data_szag`
+where stockcode ='000002'
+and (totaldown <-2 or totaldown =0)
+
+
+SELECT count(*) FROM `tdxdataanalysis`.`hs300` where hasComplete ='t'
+
+SELECT * FROM `tdxhistory`.`data_szag` where stockcode ='000725'
+
+
+SELECT tc.changetime  m,
+tc.changetime,(sum(tc.buyvolumn1)-sum(tc.sellvolumn1))/sum(tc.totalvolumn) ra,
+avg(tc.totalup),avg(tc.totaldown) at
+FROM `tdxhistory`.`data_szag1` tc
+group by m order by m
+ 

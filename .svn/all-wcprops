@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/2/trunk/%20winstock/winStock
+END
+sseconfig.xml
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/344/trunk/%20winstock/winStock/sseconfig.xml
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/314/trunk/%20winstock/winStock/.classpath
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5/trunk/%20winstock/winStock/.project
+END
+build.xml
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/10/trunk/%20winstock/winStock/build.xml
+END

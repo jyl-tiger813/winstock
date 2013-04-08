@@ -1,0 +1,24 @@
+
+--创建record表
+CREATE TABLE `sse`.`record` (
+  `changeTime` TIMESTAMP NOT NULL,
+  `maketTotal` FLOAT,
+  `circulateTotal` FLOAT,
+  `volumn` FLOAT,
+  `amount` FLOAT,
+  `hundredShare` FLOAT,
+  `perGet` FLOAT,
+  `changeRatio` FLOAT,
+	`amountPerChange` FLOAT,
+  PRIMARY KEY (`changeTime`)
+  );
+/*创建cease表*/
+CREATE TABLE `sse`.`cease` (
+  `changeTime` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`changeTime`)
+  );
+  --创建lack表
+  CREATE TABLE `sse`.`lack` (
+  `changeTime` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`changeTime`)
+  );

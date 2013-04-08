@@ -1,0 +1,51 @@
+--创建表
+create sse.dealedrecord as select changeTime,amountPerChange from sse.record
+
+--增加字段amoutpercent
+--添加序号
+CREATE DEFINER=`root`@`localhost` PROCEDURE `hundredShareAnalys`()
+BEGIN
+DECLARE rectotal INT default 1;
+ declare param2 timestamp;
+DECLARE numb INT default 1;
+DECLARE cur0 CURSOR FOR SELECT count(changeTime) from sse.dealedrecord ;
+DECLARE cur1 CURSOR FOR SELECT changeTime from sse.dealedrecord order by changeTime asc ;
+open cur0;
+  fetch cur0 into rectotal;
+     open cur1;
+         REPEAT
+           fetch cur1 into  param2;
+     update  sse.dealedrecord set seqnum=numb  WHERE changeTime = param2;
+      set numb=numb+1;
+  UNTIL numb>rectotal END REPEAT;
+     close cur1;
+END
+
+
+--计算百分比
+CREATE DEFINER=`root`@`localhost` PROCEDURE `hundredShareAnalys`()
+BEGIN
+DECLARE rectotal INT default 1;
+ declare param2 timestamp;
+  declare param3 float;
+   declare temp float default 1.0;
+DECLARE numb INT default 1;
+DECLARE cur0 CURSOR FOR SELECT count(changeTime) from sse.dealedrecord ;
+DECLARE cur1 CURSOR FOR SELECT changeTime,amountPerChange from sse.dealedrecord order by changeTime asc ;
+open cur0;
+  fetch cur0 into rectotal;
+     open cur1;
+         REPEAT
+            set temp=param3;
+           fetch cur1 into  param2,param3;
+           if temp>0
+           then
+            set temp=(param3-temp)/temp*100;
+            else
+             set temp=0.0;
+            end if     ;
+     update  sse.dealedrecord set amoutpercent=temp  WHERE changeTime = param2;
+      set numb=numb+1;
+  UNTIL numb>rectotal END REPEAT;
+     close cur1;
+END

@@ -1,0 +1,16 @@
+mysqldump -u用户名 -p密码   数据库名 -u -p 后面不带空格
+
+还原数据库
+
+再把备份的数据库还原就可以了
+导入数据库 常用source 命令
+
+  进入mysql数据库控制台，
+
+  如mysql -u root -p
+
+  mysql>use 数据库
+
+  然后使用source命令，后面参数为脚本文件(如这里用到的.sql)
+
+  mysql>source d:\wcnc_db.sql 

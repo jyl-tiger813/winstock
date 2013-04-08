@@ -1,0 +1,19 @@
+﻿CREATE PROCEDURE `sse`.`test1` ()
+BEGIN
+DECLARE done INT DEFAULT 0;
+  DECLARE a CHAR(16);
+  DECLARE b,c INT;
+  DECLARE cur1 CURSOR FOR SELECT time from sse.record;
+  DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+
+  OPEN cur1;
+
+  REPEAT
+    IF NOT done THEN
+          INSERT INTO sse.record VALUES ('2011-08-02');
+       END IF;
+  UNTIL done END REPEAT;
+
+  CLOSE cur1;
+
+END

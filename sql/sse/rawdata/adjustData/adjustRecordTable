@@ -1,0 +1,7 @@
+update `sse`.`record` set `amountPerChange`=`amount`/`hundredShare` where `hundredShare`>'0.0'
+update record set changeRatio=amount/circulateTotal where circulateTotal>0.0
+SELECT max(amountPerChange),changetime FROM `sse`.`record` group by year(`changeTime`)
+
+select * from `sse`.`record` s1 ,(SELECT max(amountPerChange) mx  FROM `sse`.`record` where amountPerChange >'0'  group by year(`changeTime`) ) s2 where s1.amountPerChange = s2.mx
+
+SELECT changetime,avg(makettotal),avg(circulatetotal),avg(changeratio)    FROM `sse`.`record`  group by year(`changeTime`) 

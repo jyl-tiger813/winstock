@@ -1,0 +1,18 @@
+-- 2013.04.01 
+
+1.日期取自json done
+
+2.批量导入，replace done
+
+3.批量导入分组分批次 done
+
+3.1 增加jvr和fjvr done(未验证，需进行验证)
+
+4.定时任务
+
+5.历史数据的导入
+
+-- 历史数据导入
+HistoryDailyDataLoader(小改动)
+
+

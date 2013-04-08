@@ -1,0 +1,25 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `seqnumAdd`(
+starttime timestamp,
+stoptime  timestamp
+)
+BEGIN
+ DECLARE lastone int;
+DECLARE rectotal INT default 1;
+     DECLARE param1 INT DEFAULT 1;
+     declare param2 timestamp;
+           DECLARE cur0 CURSOR FOR SELECT count(*) from sse.dealedrecord ;
+  DECLARE cur1 CURSOR FOR SELECT time from sse.dealedrecord where time>=stoptime and time<=starttime order by time asc ;
+  SELECT seqnum into  lastone FROM sse.dealedrecord where time<starttime order by seqnum desc limit 0,1 ;
+  open cur0;
+  fetch cur0 into rectotal;
+  close cur0;
+  OPEN cur1;
+  REPEAT
+       fetch cur1 into  param2;
+      update  sse.dealedrecord set seqnum=param1  where time=param2;
+      set lastone=lastone+1;
+      set param1=param1+1;
+  UNTIL param1>rectotal END REPEAT;
+
+  CLOSE cur1;
+END

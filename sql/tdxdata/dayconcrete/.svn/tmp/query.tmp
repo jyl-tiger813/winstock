@@ -1,0 +1,62 @@
+SELECT tt.stockcode,sz.stockname,totalBigBuyRatio,totalSmallSellRatio,totalBigSellRatio ,
+totalSmallBuyRatio,totalBuyRatio,perChangeAmount,totalAmount FROM `tdxdataanalysis`.`concretedata` tt ,tdxdataanalysis.szczandcybz sz
+ where changetime = '2010-07-23' and tt.stockcode = sz.stockcode
+order by totalBigBuyRatio desc
+
+--单支股票
+SELECT tt.changetime,tt.stockcode,sz.stockname,totalBigBuyRatio,totalSmallSellRatio,totalBigSellRatio ,
+totalSmallBuyRatio,totalBuyRatio,perChangeAmount FROM `tdxdataanalysis`.`concretedata` tt ,tdxdataanalysis.szczandcybz sz
+ where  tt.stockcode= '000792' and tt.stockcode = sz.stockcode
+order by totalBigBuyRatio desc
+
+合计分析
+select sum(totalBigBuy)/sum(totalVolumn) BigBuyRatio,sum(totalVolumn),sum(totalBigBuy)/sum(totalBigSell) BigBSRatio,
+(sum(totalBigBuy)+sum(totalOherBuy)+sum(totalSmallBuy))/(sum(totalBigSell) +sum(totalOherSell)+
+sum(totalSmallSell))BSRatio,avg(perChangeAmount)
+from `tdxdataanalysis`.`concretedata` group by changetime
+
+SELECT changetime ,sum(totalbigbuy) - sum(totalbigSell) netbigbug
+ FROM `tdxdataanalysis`.`concretedata` group by changetime
+ 
+ SELECT stockcode,changetime,totalbigbuy-totalbigsell net,netBigBuyPercent
+FROM `tdxdataanalysis`.`concretedata`
+   order by  netBigBuyPercent desc
+   
+   所有股票累计多日净大单买入量排行
+    SELECT stockcode,avg(totalBigBuyRatio) totalBigBuyR,avg(netBigBuyPercent) nbp,avg(perChangeAmount) perAm
+FROM `tdxdataanalysis`.`concretedata`
+where changetime<'2010-08-30'
+group by stockcode
+   order by  perAm asc
+   
+   板块指标,所有大单买入合计
+  SELECT changetime ,avg(totalbigbuy) - avg(totalbigSell) netbigbug,avg(perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata` group by changetime
+
+ 单支股票指标
+ query指标8
+ SELECT changetime,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata`
+ where stockcode = '002249' order by  changetime
+ 
+  板块指标,totalBigBuyRatio排行
+ SELECT stockcode,avg(totalBigBuyRatio) totalBigBuyR,avg(netBigBuyPercent) nbp
+FROM `tdxdataanalysis`.`concretedata`
+where changetime<'2010-08-30'
+group by stockcode
+   order by  nbp desc
+   
+   所有数据按照totalBigBuyRatio排名
+   SELECT stockcode,changetime,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata` order by netBigBuyPercent desc
+   
+   
+ 按日期或者股票代码分组，得到某一阶段的最大值
+ 
+ 
+ 
+ 选股1,该指标容易选出极其高度控盘的股票，从中长线看属于是高位派发
+ SELECT stockcode ,netBigBuyPercent,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata`
+ where changetime = '2010-08-03' and netBigBuyPercent>'0.09' and totalBigBuyRatio>'0.15'
+ 

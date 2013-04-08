@@ -1,0 +1,7 @@
+package jyl.index.vrs.bean;
+public  class VrsIndexDataBeanImp extends VrsIndexDataBeanAbstract 
+
+
+
+	{
+	}

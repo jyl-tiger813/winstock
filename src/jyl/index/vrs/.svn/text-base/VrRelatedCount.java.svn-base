@@ -1,0 +1,58 @@
+package jyl.index.vrs;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.sql.DataSource;
+
+import jyl.datacollect.sina.dailytrade.datafetcher.bean.DailyTradeInfoBeanImp;
+import jyl.datacollect.sina.dailytrade.datafetcher.dao.DailyTradeInfoDaoImp;
+import jyl.index.vrs.bean.VrsIndexDataBeanImp;
+import jyl.index.vrs.dao.VrsIndexDataDaoImp;
+import jyl.index.vrs.mondel.VrsModel;
+import jyl.util.DatabaseHelper;
+
+/**
+ * 类描述：   
+ * 创建人：jinyongliang
+ * 创建时间：Mar 21, 2013 11:31:24 AM   
+ * 修改人：jinyongliang   
+ * 修改时间：Mar 21, 2013 11:31:24 AM   
+ * 修改备注：   
+ * @version 
+ */
+public class VrRelatedCount {
+	DataSource ds = DatabaseHelper.getDSByNameLocalConfig("sse");
+	VrsIndexDataDaoImp vrsDao = new VrsIndexDataDaoImp();
+	DailyTradeInfoDaoImp dailyTradeDao = new DailyTradeInfoDaoImp();
+	String baseQuerySql = "select * from sse.stock_trade_daily_detail where stock_code = '";
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		VrRelatedCount vr = new VrRelatedCount();
+		vr.countOneStock("600004");
+	}
+
+	/**
+	 * @param string
+	 */
+	private void countOneStock(String string) {
+		// TODO Auto-generated method stub
+		VrsModel vm = new VrsModel();
+		try {
+			String querySql = baseQuerySql+string+"' and amount >0 order by trade_date";
+			ArrayList<DailyTradeInfoBeanImp> arrs = dailyTradeDao.getBeans( querySql,ds.getConnection());
+			System.out.print("arrsLength:"+arrs.size());
+			ArrayList<VrsIndexDataBeanImp> countResult = vm.countDatasVrs(arrs);
+			vrsDao.saveBeansDivided(countResult,ds);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

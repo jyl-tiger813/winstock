@@ -1,0 +1,13 @@
+-- 经常有可能变动的地方
+baseUrl（入口url）
+
+-- list页面配置
+paramBean.setLabelBlockOuterBegin();  //外层循环开始
+paramBean.setLabelBlockOuterEnd();    //外层循环结束
+paramBean.setLabelBlockInnerBegin();  //内层循环开始
+paramBean.setLabelBlockInnerEnd();    //内层循环结束
+paramBean.setNoInfoLabel();			  //无数据排除	
+
+-- 详情页配置
+
+InfoParamBean 参数：

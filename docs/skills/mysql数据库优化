@@ -1,0 +1,1 @@
+ALTER TABLE sse.index_vr_related_data DELAY_KEY_WRITE= 1

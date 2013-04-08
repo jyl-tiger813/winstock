@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/39/trunk/%20winstock/winStock/sql/sse
+END
+seqnumAdd.txt
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/39/trunk/%20winstock/winStock/sql/sse/seqnumAdd.txt
+END
+seqnumPro.sql
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/39/trunk/%20winstock/winStock/sql/sse/seqnumPro.sql
+END
+createTable.sql
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/39/trunk/%20winstock/winStock/sql/sse/createTable.sql
+END
+modify_script.sql
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/39/trunk/%20winstock/winStock/sql/sse/modify_script.sql
+END
+test1_succ.sql
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/39/trunk/%20winstock/winStock/sql/sse/test1_succ.sql
+END

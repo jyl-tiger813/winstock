@@ -1,0 +1,332 @@
+
+SELECT tt.stockcode,sz.stockname,totalBigBuyRatio,totalSmallSellRatio,totalBigSellRatio ,
+totalSmallBuyRatio,totalBuyRatio,perChangeAmount,totalAmount FROM `tdxdataanalysis`.`concretedata` tt ,tdxdataanalysis.szczandcybz sz
+ WHERE changetime = '2010-07-23' AND tt.stockcode = sz.stockcode
+ORDER BY totalBigBuyRatio DESC
+
+
+SELECT * FROM concretedata_szag ORDER BY changetime DESC 
+
+SELECT * FROM concretedata_szag WHERE upAndDownNextDay <> -1 ORDER BY changetime DESC 
+
+SELECT * FROM concretedata_szag WHERE upAndDownThisDay >0 ORDER BY changetime DESC 
+
+--单支股票
+SELECT tt.changetime,tt.stockcode,sz.stockname,totalBigBuyRatio,totalBigSellRatio,netBigBuyPercent
+,perChangeAmount FROM `tdxdataanalysis`.`concretedata` tt ,tdxdataanalysis.szczandcybz sz
+ WHERE  tt.stockcode= '000002' AND tt.stockcode = sz.stockcode
+ORDER BY changetime ASC
+
+SELECT * FROM concretedata_szag WHERE stockcode = '000541' ORDER BY changetime ASC 
+
+
+SELECT DATE_FORMAT(changetime,'%Y-%m') m,
+AVG((totalbigbuy-totalBigSell)/totalAmount) 
+AS m FROM concretedata_szag WHERE stockcode = '002269'  GROUP BY m
+
+ 
+
+
+合计分析
+SELECT SUM(totalBigBuy)/SUM(totalVolumn) BigBuyRatio,SUM(totalVolumn),SUM(totalBigBuy)/SUM(totalBigSell) BigBSRatio,
+(SUM(totalBigBuy)+SUM(totalOherBuy)+SUM(totalSmallBuy))/(SUM(totalBigSell) +SUM(totalOherSell)+
+SUM(totalSmallSell))BSRatio,AVG(perChangeAmount)
+FROM `tdxdataanalysis`.`concretedata` GROUP BY changetime
+
+SELECT changetime ,SUM(totalbigbuy) - SUM(totalbigSell) netbigbug
+ FROM `tdxdataanalysis`.`concretedata` GROUP BY changetime
+ 
+ SELECT stockcode,changetime,totalbigbuy-totalbigsell net,netBigBuyPercent
+FROM `tdxdataanalysis`.`concretedata`
+   ORDER BY  netBigBuyPercent DESC
+   
+   所有股票累计多日净大单买入量排行
+    SELECT stockcode,AVG(totalBigBuyRatio) totalBigBuyR,AVG(netBigBuyPercent) nbp,AVG(perChangeAmount) perAm
+FROM `tdxdataanalysis`.`concretedata`
+WHERE changetime<'2010-08-30'
+GROUP BY stockcode
+   ORDER BY  perAm ASC
+   
+   板块指标,所有大单买入合计
+   
+   周统计
+   
+   SELECT tc.changetime,DATE_FORMAT(tc.changetime,'%Y-%v') AS m,AVG(tc.totalbigbuy) - AVG(tc.totalbigSell) netbigbug,AVG(tc.perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc, `tdxdataanalysis`.`zxbz` ts
+WHERE tc.stockcode = ts.stockcode
+ GROUP BY m
+UNION(
+SELECT tc.changetime,DATE_FORMAT(tc.changetime,'%Y-%v')AS m ,AVG(totalbigbuy) - AVG(totalbigSell) netbigbug,AVG(perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata` tc,`tdxdataanalysis`.`zxbz` ts
+WHERE tc.stockcode = ts.stockcode
+ GROUP BY m) ORDER BY m
+ 
+ 
+  SELECT changetime ,AVG(totalbigbuy) - AVG(totalbigSell) netbigbug,AVG(perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata` GROUP BY changetime
+
+SELECT tc.changetime ,AVG(tc.totalbigbuy) - AVG(tc.totalbigSell) netbigbug,AVG(tc.perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc, `tdxdataanalysis`.`szagblock` ts
+WHERE tc.stockcode = ts.stockcode AND ts.blockname = 'szcz'
+ GROUP BY tc.changetime
+
+
+SELECT changetime ,AVG(totalbigbuy) - AVG(totalbigSell) netbigbug,AVG(perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata_szag` GROUP BY changetime
+ 
+ SELECT tc.changetime ,AVG(tc.totalbigbuy) - AVG(tc.totalbigSell) netbigbug,AVG(tc.perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc, `tdxdataanalysis`.`szagblock` ts
+WHERE tc.stockcode = ts.stockcode AND ts.blockname = 'szcz'
+ GROUP BY tc.changetime
+UNION(
+SELECT changetime ,AVG(totalbigbuy) - AVG(totalbigSell) netbigbug,AVG(perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata`
+ GROUP BY changetime) ORDER BY changetime
+ ~~~~~~~~~~~~~~~
+ 深证成指 板块统计（比较有效）
+ SELECT tc.changetime ,AVG(tc.totalbigbuy) - AVG(tc.totalbigSell) netbigbug,AVG(tc.perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc, `tdxdataanalysis`.`szcz` ts
+WHERE tc.stockcode = ts.stockcode
+ GROUP BY tc.changetime
+UNION(
+SELECT changetime ,AVG(totalbigbuy) - AVG(totalbigSell) netbigbug,AVG(perChangeAmount)
+ FROM `tdxdataanalysis`.`concretedata` tc,`tdxdataanalysis`.`szcz` ts
+WHERE tc.stockcode = ts.stockcode
+ GROUP BY changetime) ORDER BY changetime
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ SELECT changetime ,AVG(totalbigbuy) - AVG(totalbigSell) netbigbug,AVG(perChangeAmount),AVG(totalup)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc,`tdxdataanalysis`.`szcz` ts
+WHERE tc.stockcode = ts.stockcode
+ GROUP BY changetime
+ 
+ SELECT changetime ,AVG(totalbigbuy) - AVG(totalbigSell) netbigbug,AVG(perChangeAmount),AVG(totalup)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc
+ GROUP BY changetime
+ 
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 用于选择某天符合条件的个股
+ SELECT changetime,stockcode,netBigBuyPercent,totalBigBuyRatio,upAndDownThisDay
+FROM tdxdataanalysis.concretedata_szag
+WHERE changetime = '20100915'
+AND netBigBuyPercent >0.09 AND totalBigBuyRatio >0.15 AND upAndDownThisDay <-0.025
+ 
+ ~~~~~~~~~~~~~~~~`
+ 创建用于比较的表
+ 
+ create table `tdxdataanalysis`.`temp2`
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~
+ select t1.changetime,t1.netbigbug,t2.netbigbug,t3.netbigbug from
+`tdxdataanalysis`.`temp1` t1,`tdxdataanalysis`.`temp2` t2,`tdxdataanalysis`.`temp3` t3
+where t1.changetime =t2.changetime  and t1.changetime =t3.changetime  and t2.changetime =t3.changetime
+
+ 单支股票指标
+ query指标8
+ SELECT changetime,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata`
+ where stockcode = '002249' order by  changetime
+ 
+ SELECT changetime,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata_szag`
+ where stockcode = '002249' order by  changetime
+ 
+ SELECT changetime,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata_szag` where stockcode = '002161' union
+select changetime,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio from `tdxdataanalysis`.`concretedata`
+ where stockcode = '002161' order by  changetime
+ 
+ 
+  板块指标某一时段排名,totalBigBuyRatio排行
+ SELECT tc.stockcode,changetime,avg(totalBigBuyRatio) totalBigBuyR,avg(netBigBuyPercent) nbp
+FROM  `tdxdataanalysis`.`concretedata_szag` tc, `tdxdataanalysis`.`szcz` ts
+where tc.stockcode = ts.stockcode and changetime>='2010-08-30' and changetime<='2010-08-30'
+group by stockcode
+   order by  nbp desc
+   
+   所有数据按照totalBigBuyRatio排名
+   SELECT stockcode,changetime,totalbigbuy-totalbigsell net,
+   netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata` order by netBigBuyPercent desc
+   
+   
+ 按日期或者股票代码分组，得到某一阶段的最大值
+ 
+ 
+ 
+ 选股1,该指标容易选出极其高度控盘的股票，从中长线看属于是高位派发
+ SELECT stockcode ,netBigBuyPercent,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata`
+ where changetime = '2010-08-03' and netBigBuyPercent>'0.09' and totalBigBuyRatio>'0.15'
+ 
+ 从所有深圳A股中选
+SELECT stockcode,changetime,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata_szag` order by netBigBuyPercent desc
+
+从深证成指板块中选
+SELECT stockcode,changetime,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio
+FROM `tdxdataanalysis`.`concretedata_szag`　　
+tc, `tdxdataanalysis`.`szcz` ts
+where tc.stockcode = ts.stockcode
+ order by netBigBuyPercent desc
+ 
+ SELECT stockcode,avg(totalBigBuyRatio) totalBigBuyR,avg(netBigBuyPercent) nbp,avg(perChangeAmount) perAm
+FROM `tdxdataanalysis`.`concretedata_szag`　
+tc, `tdxdataanalysis`.`szcz` ts
+where tc.stockcode = ts.stockcode　
+group by stockcode
+   order by  nbp desc
+   
+
+上面指标
+最好还得结合看前期累计情况
+SELECT stockcode,avg(totalBigBuyRatio) totalBigBuyR,avg(netBigBuyPercent) nbp,avg(perChangeAmount) perAm
+FROM `tdxdataanalysis`.`concretedata_szag`
+where changetime<'2010-08-30'
+group by stockcode
+   order by  nbp desc
+   
+   还得找一个股票上涨后还值得继续买入的指标
+   
+   看数据是否完整
+   
+   SELECT count(*)
+ FROM `tdxdataanalysis`.`concretedata_szag`
+  where changetime ='2010-09-13'
+ 
+ 
+ 选出不在采集范围内的数据
+ SELECT t1.stockcode
+ FROM `tdxdataanalysis`.`concretedata_szag` t1
+  where
+  changetime = '20100917' and t1.stockcode not in
+   (select stockcode from `tdxdataanalysis`.`szagblock` )
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   SELECT stockcode,totalbigbuy-totalbigsell net,netBigBuyPercent,totalsmallbuy,totalsmallSell,totalBigBuyRatio,totalup,totaldown
+FROM `tdxdataanalysis`.`concretedata_szag`
+ where changetime = '20101011' order by  totalup
+ 
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ SELECT changetime ,totalbigbuy-totalbigsell net,
+ netBigBuyPercent,totalsmallbuy,totalsmallSell,
+ totalBigBuyRatio,totalup,totaldown,open,close
+FROM `tdxdataanalysis`.`concretedata_szag`
+ where stockcode = '002230' order by  changetime
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 比较有用
+ SELECT count(stockcode),avg (upanddownthisday),avg (upanddownnextday),avg (netBigBuyPercent)
+FROM `tdxdataanalysis`.`concretedata_szag`
+ where netBigBuyPercent <-0.09 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and'-0.025'
+ and upanddownnextday between '-0.1' and '0.1'
+order by netBigBuyPercent
+
+优化时考虑加上成交量变化因素
+ SELECT stockcode,changetime,upanddownthisday, upanddownnextday, netBigBuyPercent
+FROM `tdxdataanalysis`.`concretedata_szag`
+where netBigBuyPercent <-0.29 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and'-0.025'
+ and upanddownnextday between '-0.1' and '0.1'
+ and changetime > '2011-03-01'
+order by stockcode,changetime
+
+ SELECT * from  `tdxdataanalysis`.`concretedata_szag` order by changetime desc
+ 
+  SELECT count(*),avg(upanddownnextday),totalup/open  from  `tdxdataanalysis`.`concretedata_szag` where
+ --  upAndDownThisDay between '-0.1'and'-0.025'  and
+ -- upanddownnextday between '-0.1' and '0.1' and
+    totalup/open > 2 order by totalup/open desc
+
+-- 均值
+ SELECT count(stockcode),changetime,upanddownthisday, avg(upanddownnextday), netBigBuyPercent
+FROM `tdxdataanalysis`.`concretedata_szag`
+where netBigBuyPercent <-0.29 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and'-0.025'
+ and upanddownnextday between '-0.1' and '0.1'
+  and changetime > '2011-03-01'
+order by stockcode,changetime
+
+ SELECT stockcode,changetime,upanddownthisday, upanddownnextday, netBigBuyPercent
+FROM `tdxdataanalysis`.`concretedata_szag`
+where netBigBuyPercent <-0.29 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and'-0.025'
+ and upanddownnextday between '-0.1' and '0.1'
+  and changetime > '2011-03-01'
+order by stockcode,changetime
+ 
+ SELECT count(stockcode),changetime,upanddownthisday, avg(upanddownnextday), netBigBuyPercent
+FROM `tdxdataanalysis`.`concretedata_szag`
+where netBigBuyPercent <-0.29 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and'0.1'
+ and upanddownnextday between '-0.1' and '0.1'
+order by stockcode,changetime 
+ 
+  SELECT stockcode,changetime,upanddownthisday, avg(upanddownnextday), netBigBuyPercent
+FROM `tdxdataanalysis`.`concretedata_szag`
+where netBigBuyPercent <-0.09 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and '0.1'
+ and upanddownnextday between '-0.1' and '0.1'
+order by stockcode,changetime
+ 
+  SELECT stockcode,changetime,upanddownthisday, avg(upanddownnextday), netBigBuyPercent
+FROM `tdxdataanalysis`.`concretedata_szag`
+where netBigBuyPercent >0.09 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and'-0.025'
+ and upanddownnextday between '-0.1' and '0.1'
+order by stockcode,changetime
+
+ SELECT changetime ,totalbigbuy-totalbigsell net,
+ netBigBuyPercent,totalsmallbuy,totalsmallSell,
+ totalBigBuyRatio,totalup,totaldown,open,close
+FROM `tdxdataanalysis`.`concretedata_szag`
+ where stockcode = '300039' order by  changetime
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ SELECT count(stockcode),avg (upanddownthisday),avg (upanddownnextday),avg((totalbigbuy-totalbigsell )/totalvolumn )
+FROM `tdxdataanalysis`.`concretedata_szag`
+ where (totalbigbuy-totalbigsell )/totalvolumn <-0.09 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and'-0.025'
+ and upanddownnextday between '-0.1' and '0.1'
+order by netBigBuyPercent
+
+ SELECT stockcode,changetime,upanddownthisday,upanddownnextday,(totalbigbuy-totalbigsell )/totalvolumn  ,close
+FROM `tdxdataanalysis`.`concretedata_szag`
+ where (totalbigbuy-totalbigsell )/totalvolumn <-0.09 and totalBigBuyRatio >0.15
+  and upAndDownThisDay between '-0.1'and'-0.025'
+ and upanddownnextday between '-0.1' and '0.1'
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  SELECT tc.stockcode,changetime,avg(totalBigBuyRatio) totalBigBuyR,sum(totalbigbuy-totalbigsell )/sum(totalvolumn) nbp
+FROM  `tdxdataanalysis`.`concretedata_szag` tc, `tdxdataanalysis`.`hs300` ts
+where tc.stockcode = ts.stockcode and changetime>='2010-07-01' and changetime<='2010-09-01'
+group by stockcode
+   order by  nbp desc
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SELECT tc.changetime ,avg(tc.totalbigbuy) - avg(tc.totalbigSell) netbigbug,avg(tc.perChangeAmount),
+avg(totalup),avg(upanddownthisday),avg(upanddownnextday),avg(close)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc, `tdxdataanalysis`.`cybz` ts
+where tc.stockcode = ts.stockcode and upanddownthisday!=-1
+ group by tc.changetime
+
+ SELECT tc.changetime ,avg(tc.totalbigbuy) - avg(tc.totalbigSell) netbigbug,avg(tc.perChangeAmount),
+avg(totalup),avg(upanddownthisday),avg(upanddownnextday),avg(close)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc, `tdxdataanalysis`.`szcz` ts
+where tc.stockcode = ts.stockcode and upanddownthisday!=-1
+ group by tc.changetime
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  SELECT count(stockcode),avg (upanddownthisday),avg (upanddownnextday),avg((totalbigbuy-totalbigsell )/totalvolumn )
+FROM `tdxdataanalysis`.`concretedata_szag`
+ where (totalbigbuy-totalbigsell )/totalvolumn <-0.09 and totalBigBuyRatio >0.15
+and changetime >'20101105' and changetime<'20110126'
+  and upAndDownThisDay between '-0.1'and'-0.025'
+ and upanddownnextday between '-0.1' and '0.1'
+order by netBigBuyPercent
+ 
+ --板块整体排行,按月份
+ SELECT changetime ,avg(totalbigbuy) - avg(totalbigSell) netbigbug,avg(perChangeAmount),avg(totalup),avg(upanddownthisday)
+ FROM `tdxdataanalysis`.`concretedata_szag` tc
+ ,`tdxdataanalysis`.`cybz` ts
+where tc.stockcode = ts.stockcode and  upAndDownThisDay between '-0.1'and'0.1'
+ group by DATE_FORMAT(changetime,'%Y-%m')
+ 
+ 
+ --个股按月统计
+ select changetime ,sum(upanddownthisday) from `tdxdataanalysis`.`concretedata_szag` where stockcode = '000001'
+and upAndDownThisDay between '-0.1'and '0.1'
+ group by DATE_FORMAT(changetime,'%Y-%m')

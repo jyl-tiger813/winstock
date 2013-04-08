@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean
+END
+AbstractBeanGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/AbstractBeanGenerator.java
+END
+AbstractClassGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/AbstractClassGenerator.java
+END
+GenerateParamBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/GenerateParamBean.java
+END
+ImplementDaoGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/!svn/ver/348/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/ImplementDaoGenerator.java
+END
+ImplementBeanGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/ImplementBeanGenerator.java
+END
+ImplementClassGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/ImplementClassGenerator.java
+END
+DbField.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/DbField.java
+END
+ClassGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/ClassGenerator.java
+END
+AbstractDaoGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/340/trunk/%20winstock/winStock/src/jyl/codegenerate/bean/AbstractDaoGenerator.java
+END

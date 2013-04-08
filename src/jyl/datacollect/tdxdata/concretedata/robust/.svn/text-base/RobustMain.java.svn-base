@@ -1,0 +1,212 @@
+package jyl.datacollect.tdxdata.concretedata.robust;
+
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.io.File;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Set;
+import jyl.datacollect.tdxdata.concretedata.ConcreteDataDealer;
+import jyl.datacollect.tdxdata.dao.TdxDataJdbcImp;
+import jyl.util.MyCalendar;
+import jyl.util.ShutDownMac;
+
+/*
+ * 1.输入股票代码,回车
+ * 2.按.501回车723
+ * .
+ * 3.按f1
+ * 4.34回车,导出数据
+ * 5.按Esc键4
+ * 
+ * 
+ * 7.进行下一次操作0002034
+ * .501
+ * 
+ * 每步操作完成后暂停100ms
+ * . : 46
+ *回车键 10
+￿ *F1键 1120
+
+ */
+public class RobustMain 
+	{
+	Robot rb ;
+	float screenWidth;
+	float screenHeight;
+	private int before =2000;
+	private int interval = 50; //调试时为了看清楚，可以把值设大些等待数据导出
+//	String storeFile = "E:\\stock\\tdxdata\\concrete";
+	
+	String storeFile = "E:\\stock\\tdxdata\\concreteszag";
+	Set<String> set = null;
+	private int keyInterval = 50;
+ 
+	public static void main(String args [])
+	{
+		RobustMain rm = new RobustMain();
+		rm.doRobust();
+		ConcreteDataDealer cdd = new ConcreteDataDealer();
+		//cdd.bigBuySell();
+		cdd.getAllDatas();
+	   cdd.configAndDeal();   
+		
+		
+		
+		
+		
+		ShutDownMac.shutDownIn(100);
+	//	}501
+		
+		
+	}
+	
+	
+
+	private void doRobust() {
+		// TODO Auto-generated method stub
+		try {
+			rb= new Robot();
+			
+		} catch (AWTException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		screenWidth = screen.width;
+		screenHeight = screen.height;
+		valadiate();
+	}
+
+	private void valadiate() {
+		// TODO Auto-generated method stub0001
+		
+		String day = getDateNotWeekEnd();
+		 set = getBlockCode();
+		//String day = "20100810";
+		System.out.println("day:"+day);
+		File baseFile = new File(storeFile);
+		File dayFile = new File(baseFile,day);
+		String [] files = dayFile.list();
+		System.out.println("size "+set.size());
+		for(String file : files )
+		{
+			String tem = file.replaceAll(".TXT", "");
+			set.remove(tem);
+		}
+		
+		System.out.println("还需要采集 "+set.size());
+		rb.delay(before);
+		//if(3>2)return;
+		for(String stockcode: set)
+		{
+		getOneStockConcrete(stockcode);
+		}
+		if(set.size()>0)  
+		{
+			valadiate();
+			
+		}
+	}
+
+	private String getDateNotWeekEnd() {
+		// TODO Auto-generated method stub
+		Calendar cal = new GregorianCalendar();
+		cal.add(Calendar.DAY_OF_YEAR,1);	
+		 cal = MyCalendar.backDayNotWeekEnd(cal);
+		while(cal.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY||cal.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY)
+			cal.add(Calendar.DAY_OF_YEAR,-1);	
+		return MyCalendar.getStringEight(cal);
+	}
+
+	private void getOneStockConcrete(String stockcode) 
+	{
+		// TODO Auto-generated method stub
+		pressKeyStringAllNumber(stockcode);
+		pressKeyReturn();
+		pressKeyOneNumber(46);//.
+		pressKeyStringAllNumber("501");	
+		pressKeyReturn();
+		pressKeyOneNumber(112);
+		pressKeyStringAllNumber("34");
+		pressKeyReturn();
+		pressKeyReturn();
+		rb.delay(interval);
+		waiforDataExport(); //等待数据导出
+	//	rb.delay(interval);
+	//00	System.out.println("interval:"+interval);
+		pressKeyOneNumber(27);//esc
+		
+	}
+	
+	
+
+	private void waiforDataExport() {
+		// TODO Auto-generated method stub
+		//341,335  385,366
+			int xPosition = 341;
+		int yPosition = 335;
+		int xScope = 40;
+		int yScope = 60
+		;
+		Color [][] datas = new Color[xScope][yScope];
+		/*rb.mouseMove(xPosition,yPosition);
+		rb.delay(2000);
+		rb.mouseMove(xPosition+xScope,yPosition+yScope);
+		rb.delay(10000);*/
+		boolean isStop = false;
+		//System.out.println("outofwhile");
+		while (!isStop) {
+			//System.out.println("begin");
+			rb.delay(500);
+			isStop = true;
+			for (int i = 0; i < xScope; i++) {
+				for (int j = 0; j < yScope; j++) {
+					Color col = rb.getPixelColor(xPosition + i, yPosition + j);
+					if (!col.equals(datas[i][j])) {
+						isStop = false;
+					}
+					datas[i][j] = col;
+				}
+			}
+		System.out.println("after");
+			/*rb.mouseMove(xPosition+xScope,yPosition+yScope);
+			rb.delay(1000);*/
+		}	
+	}
+
+	public void pressKeyOneNumber(int i) {
+		// TODO Auto-generated method stub
+		rb.keyPress(i);
+		rb.delay(keyInterval );
+		rb.keyRelease(i);
+		rb.delay(keyInterval );
+	}
+
+	public void pressKeyReturn() {
+		// TODO Auto-generated method stub
+		pressKeyOneNumber(10);
+	}
+
+	public void pressKeyStringAllNumber(String string) {
+		// TODO Auto-generated method stub,如果是数就加上48
+		char [] numbers = string.toCharArray();
+		for(char cn : numbers )
+		{ 
+			int num = (int)cn+48;
+			pressKeyOneNumber(num);
+		}
+		
+	}
+
+	private Set<String> getBlockCode() {
+		// TODO Auto-generated method stub00006
+		TdxDataJdbcImp tdj = new TdxDataJdbcImp();
+		
+		return tdj.getBlockCode();
+	}
+	}

@@ -1,0 +1,55 @@
+板快指标
+SELECT changetime, avg(buyvolumnRatio) blr,avg(netbuyvolumnpercent) nvp,avg(cheatBuyVolumn-cheatSellVolumn) cheat
+ FROM `tdxbuysellcompare`.`concretedata_szag`
+  group by changetime order by changetime asc
+  
+  排行指标
+  SELECT *
+ FROM `tdxbuysellcompare`.`concretedata_szag`
+where changetime = '20100803'
+   order by netbuyvolumnpercent asc
+   
+   某段时间排行指标
+   SELECT stockcode, avg(buyvolumnRatio) blr,avg(netbuyvolumnpercent) nvp,avg(amountperchange)apc
+ FROM `tdxbuysellcompare`.`concretedata_szag` where changetime <= '2010806' and changetime >= '20100801'
+  group by stockcode order by apc desc
+  
+  某支股票指标
+  SELECT * FROM `tdxbuysellcompare`.`concretedata_szag` 
+   where stockcode = '002047' order by changetime
+   
+   SELECT tc.stockcode, avg(tc.buyvolumnRatio) blr,avg(tc.netbuyvolumnpercent) nvp
+,avg(tc.amountperchange)apc,avg(tc.upAndDownThisDay) udt
+,avg(tc.netbuyvolumnpercent)/avg(tc.upAndDownThisDay) comp
+ FROM `tdxbuysellcompare`.`concretedata_szag` tc, `tdxdataanalysis`.`szagblock` ts
+ where tc.changetime <= '20100817' and tc.changetime >='20100809' and
+ tc.stockcode = ts.stockcode  and upAndDownThisDay >-0.2
+  group by tc.stockcode having udt > 0.001 order by comp desc
+  
+  
+  SELECT tc.stockcode, avg(tc.buyvolumnRatio) blr,avg(tc.netbuyvolumnpercent) nvp
+,avg(tc.amountperchange)apc,avg(tc.upAndDownThisDay) udt
+,avg(tc.netbuyvolumnpercent)/avg(tc.upAndDownThisDay) comp
+ FROM `tdxbuysellcompare`.`concretedata_szag` tc, `tdxdataanalysis`.`szagblock` ts
+ where tc.changetime <= '20100817' and tc.changetime >='20100809' and
+ tc.stockcode = ts.stockcode  and upAndDownThisDay >-0.2
+  group by tc.stockcode order by nvp desc
+  
+  
+  较为有效
+  SELECT tc.stockcode, (sum(tc.buyvolumn)-sum(tc.sellvolumn))/sum(totalvolumn) blr,avg(tc.netbuyvolumnpercent) nvp
+,avg(tc.amountperchange)apc,avg(tc.upAndDownThisDay) udt
+,(sum(tc.buyvolumn)-sum(tc.sellvolumn))/sum(totalvolumn)/avg(tc.upAndDownThisDay) comp
+ FROM `tdxbuysellcompare`.`concretedata_szag` tc, `tdxdataanalysis`.`szagblock` ts
+ where tc.changetime >= '20100723' and tc.changetime <='20100730' and
+ ts.blockname = 'szcz' and
+ tc.stockcode = ts.stockcode  and upAndDownThisDay >-0.2
+  group by tc.stockcode
+  having blr > 0.002 or blr >-0.002
+  order by comp desc
+  
+  
+  SELECT changetime,(buyvolumn1-sellvolumn1)/totalvolumn ,totalUp,totalDown,
+FROM `tdxhistory`.`data_szag`
+  
+   

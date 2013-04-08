@@ -1,0 +1,55 @@
+-- 2013.04.01 
+
+1.日期取自json done
+
+2.批量导入，replace done
+
+3.批量导入分组分批次 done
+
+3.1 增加jvr和fjvr done(未验证，需进行验证)
+
+4.定时任务 done
+
+/程序/附件/系统工具/计划任务
+
+5.历史数据的导入
+
+-- 历史数据导入
+HistoryDailyDataLoader(小改动) done
+
+MainDispatcher
+
+HistoryDataRobust(通达信历史数据获取) 使用通达信现有功能即可
+
+-- 2013.04.13
+1.历史数据计算
+2.增量数据计算，修改定时任务
+
+-- 上交所数据抓取
+PeriodFinalReportSseImp
+
+
+// 计算按某个标准选股得到的平均收益率（变动其中某些指标，得到最好的指标组合）
+
+抓取数据页面需要先执行js，得到结果数据
+
+http://htmlunit.sourceforge.net/swing
+调用javaFX里面的webview webegine
+
+--  使用例子
+http://www.blogjava.net/caizh2009/archive/2010/05/28/322145.html
+
+http://blog.csdn.net/daniel_kaka/article/details/1568287
+
+http://wenku.baidu.com/view/6c523283ec3a87c24028c463.html
+
+
+TODO 用kettle 导数据
+
+--
+按指标id和countday组合分表
+
+1.先创建表（后缀）done
+
+-- 2013.04.08
+kettle 转化数据

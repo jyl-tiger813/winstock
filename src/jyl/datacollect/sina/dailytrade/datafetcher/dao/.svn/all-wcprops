@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/352/trunk/%20winstock/winStock/src/jyl/datacollect/sina/dailytrade/datafetcher/dao
+END
+DailyTradeInfoDaoAbstract.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/!svn/ver/358/trunk/%20winstock/winStock/src/jyl/datacollect/sina/dailytrade/datafetcher/dao/DailyTradeInfoDaoAbstract.java
+END
+DailyTradeInfoDaoImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/!svn/ver/358/trunk/%20winstock/winStock/src/jyl/datacollect/sina/dailytrade/datafetcher/dao/DailyTradeInfoDaoImp.java
+END
+StockNameDaoAbstract.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/!svn/ver/352/trunk/%20winstock/winStock/src/jyl/datacollect/sina/dailytrade/datafetcher/dao/StockNameDaoAbstract.java
+END
+StockNameDaoImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/!svn/ver/352/trunk/%20winstock/winStock/src/jyl/datacollect/sina/dailytrade/datafetcher/dao/StockNameDaoImp.java
+END
