@@ -220,8 +220,8 @@ public class VrsModel{
 		// TODO 修改当前需要进行计算的指标
 		String keyStr = vrs.getIndexId()+"_"+vrs.getCountDays();
 		//has done : 4_10
-		if(!"1_10".equals(keyStr))
-			return;
+		/*if(!"1_10".equals(keyStr))
+			return;*/
 		ArrayList<VrsIndexDataBeanImp> arrResult = resultMap.get(keyStr);
 		if(arrResult==null)
 		{

@@ -33,7 +33,7 @@ public class VrRelatedCount {
 	Connection con = null;
 	VrsIndexDataDaoImp vrsDao = new VrsIndexDataDaoImp();
 	DailyTradeInfoDaoImp dailyTradeDao = new DailyTradeInfoDaoImp();
-	String baseQuerySql = "select * from sse.stock_trade_daily_detail where stock_code = '";
+	String baseQuerySql = "SELECT * FROM (SELECT * FROM stock_trade_daily_detail where stock_code = '";
 
 	/**
 	 * @param args
@@ -149,7 +149,7 @@ public class VrRelatedCount {
 	private void countOneStock(String string) {
 		// TODO Auto-generated method stub
 		VrsModel vm = new VrsModel();
-		String querySql = baseQuerySql+string+"' and amount >0 order by trade_date";
+		String querySql = baseQuerySql+string+"' and amount >0 ORDER BY trade_date DESC  LIMIT 100)t ORDER BY trade_date ";
 		 String user = "root";
 			String password = "manager";
 			 String url = "jdbc:mysql://localhost:3306/sse?useUnicode=true&amp;characterEncoding=UTF-8";
