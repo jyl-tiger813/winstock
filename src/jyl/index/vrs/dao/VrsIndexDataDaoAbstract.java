@@ -12,8 +12,6 @@ import jyl.index.vrs.bean.VrsIndexDataBeanImp;
 
 public abstract class VrsIndexDataDaoAbstract extends AbstractBaseDAO 
 
-
-
 {
 
 
@@ -48,6 +46,11 @@ e.printStackTrace();
 
 public void saveBeans(String keyStr, List<VrsIndexDataBeanImp> beans,Connection con)
 {String sqlStrs = "";
+/*
+ * private Double ave_change_ratiodouble ;//今天昨天均价变化率
+	private Double change_ratio_close_begindouble ;//今天收盘 开盘
+	private Double change_ratio_avg_closedouble ;//今天均价收盘
+ */
 for(VrsIndexDataBeanImp bean:beans)
 {
 Object objIndexId = bean.getIndexId();
@@ -62,13 +65,24 @@ Object objIndexValue = bean.getIndexValue();
 String IndexValuevalueStr = convertObj2string(objIndexValue); 
 Object objStockCodeInt = bean.getStockCodeInt();
 String StockCodeIntValue = convertObj2string(objStockCodeInt); 
+Object changeRatio = bean.getChangeRatio();
+String changeRatioStr = convertObj2string(changeRatio); 
+Object ave_change_ratio = bean.getAve_change_ratio();
+String ave_change_ratioStr = convertObj2string(ave_change_ratio); 
+Object change_ratio_close_begin = bean.getChange_ratio_close_begin();
+String change_ratio_close_beginStr = convertObj2string(change_ratio_close_begin); 
+Object change_ratio_avg_close = bean.getChange_ratio_avg_close();
+String change_ratio_avg_closeStr = convertObj2string(change_ratio_avg_close); 
 
 
 if("".equals(sqlStrs))
-sqlStrs = "replace into sse.index_vr_related_data"+keyStr+"(index_id,stock_code,stock_code_int,count_days,trade_date,index_value)values("+IndexIdvalueStr+","+StockCodevalueStr+","+StockCodeIntValue+","+CountDaysvalueStr+","+TradeDatevalueStr+","+IndexValuevalueStr+")";
+sqlStrs = "replace into sse.index_vr_related_data"+keyStr+"(index_id,stock_code,change_ratio,ave_change_ratio,change_ratio_close_begin," +
+		"change_ratio_avg_close,stock_code_int,count_days,trade_date,index_value)values(" +
+		""+IndexIdvalueStr+","+StockCodevalueStr+","+changeRatioStr+","+ave_change_ratioStr+","+change_ratio_close_beginStr+","+change_ratio_avg_closeStr+","+StockCodeIntValue+","+CountDaysvalueStr+","+TradeDatevalueStr+","+IndexValuevalueStr+")";
 else
 
-sqlStrs = sqlStrs+",("+IndexIdvalueStr+","+StockCodevalueStr+","+StockCodeIntValue+","+CountDaysvalueStr+","+TradeDatevalueStr+","+IndexValuevalueStr+")";}
+sqlStrs = sqlStrs+",("+IndexIdvalueStr+","+StockCodevalueStr+","+changeRatioStr+"," +ave_change_ratioStr+","+change_ratio_close_beginStr+","+change_ratio_avg_closeStr+","+
+		""+StockCodeIntValue+","+CountDaysvalueStr+","+TradeDatevalueStr+","+IndexValuevalueStr+")";}
 try {
 	excuteSqlStrsSustainCon( sqlStrs, con);
 } catch (SQLException e) {

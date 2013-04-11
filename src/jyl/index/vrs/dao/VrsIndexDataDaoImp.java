@@ -43,11 +43,11 @@ public  class VrsIndexDataDaoImp extends VrsIndexDataDaoAbstract
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
-				saveBeans(keyStr,countResult.subList(i-batchNum>0?i-batchNum:0, i),con);
+				saveBeans(keyStr,countResult.subList(i-batchNum>0?i-batchNum:0, i+1),con);
 				lastPos = i;
 			}
 		}
-		if(lastPos!= (countResult.size() -1))
+		if(lastPos< (countResult.size() -1))
 		{
 		//	con = DatabaseHelper.getAdConnectionByParams(url,user,password);
 			/*
@@ -57,7 +57,7 @@ public  class VrsIndexDataDaoImp extends VrsIndexDataDaoAbstract
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
-			saveBeans(keyStr,countResult.subList(lastPos, countResult.size() -1), con);
+			saveBeans(keyStr,countResult.subList(lastPos, countResult.size()), con);
 		}
 	}
 	}

@@ -43,25 +43,56 @@ public class VrsModel{
 		HashMap<String,ArrayList<VrsIndexDataBeanImp>> resultMap =new HashMap<String,ArrayList<VrsIndexDataBeanImp>>();
 		// ArrayList<VrsIndexDataBeanImp> result = new  ArrayList<VrsIndexDataBeanImp>();
 		// 从数组1位置开始
-		 double exp = 10E-4;
+		//增加一个指标，当日数据变化
+		 double exp = 10E-6;
 		for(int i=1;i<arrs.size();i++)
 		{
 			DailyTradeInfoBeanImp dailyBean = arrs.get(i);
 			DailyTradeInfoBeanImp yesBean = arrs.get(i-1);
 			Float colsedToday = dailyBean.getCloseToday();
 			Float colsedYes = yesBean.getCloseToday();
+			Float beginToday = yesBean.getBeginToday();
 			Double avgToday = dailyBean.getAmount()/dailyBean.getVolumn();
 			Double avgYes = yesBean.getAmount()/yesBean.getVolumn();
+			Double changeRatio = null;
+			 Double ave_change_ratio  = null;//今天昨天均价变化率
+			 Double change_ratio_close_begin  = null;//今天收盘 开盘
+			 Double change_ratio_avg_close  = null;//今天均价收盘
+			if(colsedToday-colsedYes>exp||colsedYes-colsedToday>exp)
+				changeRatio = (double) ((colsedToday-colsedYes)*100/colsedYes);
+			else
+				changeRatio = 0d;
+			
+			//均价处理
+			
+			if(avgToday-avgYes>exp||avgYes-avgToday>exp)
+				ave_change_ratio = (double) ((avgToday-avgYes)*100/avgYes);
+			else
+				ave_change_ratio = 0d;
+			
+			//开收盘价格变动率
+			if(colsedToday-beginToday>exp||beginToday-colsedToday>exp)
+				change_ratio_close_begin = (double) ((colsedToday-beginToday)*100/avgYes);
+			else
+				change_ratio_close_begin = 0d;
+			
+			//均价收盘变动率
+			
+			if(avgToday-colsedToday>exp||colsedToday-avgToday>exp)
+				change_ratio_avg_close = (double) ((avgToday-colsedToday)*100/avgYes);
+			else
+				change_ratio_avg_close = 0d;
+			
 			for(int j=0;j<countDaysArr.length;j++)
 			{
 				int countDay = countDaysArr[j];
 				Long middleValues = middleValuesIncrease.get(j)==null?0:middleValuesIncrease.get(j);
 				Long decreaseValues = middledecreaseValues.get(j)==null?0:middledecreaseValues.get(j);
 				Long equalValues = equalsValuesMap.get(j)==null?0:equalsValuesMap.get(j);
-
 				Long avgMiddleValues= avgMiddleValuesIncrease.get(j)==null?0:avgMiddleValuesIncrease.get(j);
 				Long avgDecreaseValues = avgValuesDecrease.get(j)==null?0:avgValuesDecrease.get(j);
 				Long avgequalValues = avgequalValuesMap.get(j)==null?0:avgequalValuesMap.get(j);
+				
 				
 				//增加部分
 				//当日上涨
@@ -156,7 +187,25 @@ public class VrsModel{
 						vrs.setStockCode(dailyBean.getStockCode());
 						vrs.setStockCodeInt(Integer.parseInt(dailyBean.getStockCode()));
 						vrs.setTradeDate(dailyBean.getTradeDate());
+						vrs.setChangeRatio(changeRatio);
+						vrs.setAve_change_ratio(ave_change_ratio);
+						vrs.setChange_ratio_close_begin(change_ratio_close_begin);
+						vrs.setChange_ratio_avg_close(change_ratio_avg_close);
 						addBean2Map(vrs,resultMap);
+					}
+					else
+					{
+						VrsIndexDataBeanImp vrs = new VrsIndexDataBeanImp();
+						vrs.setIndexId(1);
+						vrs.setCountDays(countDay);
+						vrs.setIndexValue(100000d);
+						vrs.setStockCode(dailyBean.getStockCode());
+						vrs.setStockCodeInt(Integer.parseInt(dailyBean.getStockCode()));
+						vrs.setTradeDate(dailyBean.getTradeDate());
+						vrs.setChangeRatio(changeRatio);
+						vrs.setAve_change_ratio(ave_change_ratio);
+						vrs.setChange_ratio_close_begin(change_ratio_close_begin);
+						vrs.setChange_ratio_avg_close(change_ratio_avg_close);
 						addBean2Map(vrs,resultMap);
 					}
 					if((middleValues+equalValues)>exp)
@@ -168,8 +217,24 @@ public class VrsModel{
 						vrs.setIndexValue(fvrDay);
 						vrs.setStockCode(dailyBean.getStockCode());
 						vrs.setTradeDate(dailyBean.getTradeDate());
+						vrs.setChangeRatio(changeRatio);
+						vrs.setAve_change_ratio(ave_change_ratio);
+						vrs.setChange_ratio_close_begin(change_ratio_close_begin);
+						vrs.setChange_ratio_avg_close(change_ratio_avg_close);
 						addBean2Map(vrs,resultMap);
-					}
+					}else
+					{
+					VrsIndexDataBeanImp vrs = new VrsIndexDataBeanImp();
+					vrs.setIndexId(2);
+					vrs.setCountDays(countDay);
+					vrs.setIndexValue(10000d);
+					vrs.setStockCode(dailyBean.getStockCode());
+					vrs.setTradeDate(dailyBean.getTradeDate());
+					vrs.setChangeRatio(changeRatio);
+					vrs.setAve_change_ratio(ave_change_ratio);
+					vrs.setChange_ratio_close_begin(change_ratio_close_begin);
+					vrs.setChange_ratio_avg_close(change_ratio_avg_close);
+					addBean2Map(vrs,resultMap);}
 					
 					
 					//均值数据
@@ -182,6 +247,23 @@ public class VrsModel{
 						vrs.setIndexValue(vrDay);
 						vrs.setStockCode(dailyBean.getStockCode());
 						vrs.setTradeDate(dailyBean.getTradeDate());
+						vrs.setChangeRatio(changeRatio);
+						vrs.setAve_change_ratio(ave_change_ratio);
+						vrs.setChange_ratio_close_begin(change_ratio_close_begin);
+						vrs.setChange_ratio_avg_close(change_ratio_avg_close);
+						addBean2Map(vrs,resultMap);
+					}else
+					{
+						VrsIndexDataBeanImp vrs = new VrsIndexDataBeanImp();
+						vrs.setIndexId(3);
+						vrs.setCountDays(countDay);
+						vrs.setIndexValue(10000d);
+						vrs.setStockCode(dailyBean.getStockCode());
+						vrs.setTradeDate(dailyBean.getTradeDate());
+						vrs.setChangeRatio(changeRatio);
+						vrs.setAve_change_ratio(ave_change_ratio);
+						vrs.setChange_ratio_close_begin(change_ratio_close_begin);
+						vrs.setChange_ratio_avg_close(change_ratio_avg_close);
 						addBean2Map(vrs,resultMap);
 					}
 					
@@ -195,6 +277,23 @@ public class VrsModel{
 						vrs.setIndexValue(vrDay);
 						vrs.setStockCode(dailyBean.getStockCode());
 						vrs.setTradeDate(dailyBean.getTradeDate());
+						vrs.setChangeRatio(changeRatio);
+						vrs.setAve_change_ratio(ave_change_ratio);
+						vrs.setChange_ratio_close_begin(change_ratio_close_begin);
+						vrs.setChange_ratio_avg_close(change_ratio_avg_close);
+						addBean2Map(vrs,resultMap);
+					}else
+					{
+						VrsIndexDataBeanImp vrs = new VrsIndexDataBeanImp();
+						vrs.setIndexId(4);
+						vrs.setCountDays(countDay);
+						vrs.setIndexValue(10000d);
+						vrs.setStockCode(dailyBean.getStockCode());
+						vrs.setTradeDate(dailyBean.getTradeDate());
+						vrs.setChangeRatio(changeRatio);
+						vrs.setAve_change_ratio(ave_change_ratio);
+						vrs.setChange_ratio_close_begin(change_ratio_close_begin);
+						vrs.setChange_ratio_avg_close(change_ratio_avg_close);
 						addBean2Map(vrs,resultMap);
 					}
 					}
@@ -220,8 +319,8 @@ public class VrsModel{
 		// TODO 修改当前需要进行计算的指标
 		String keyStr = vrs.getIndexId()+"_"+vrs.getCountDays();
 		//has done : 4_10
-		/*if(!"1_10".equals(keyStr))
-			return;*/
+		if(!"3_10".equals(keyStr))//||"1_10".equals(keyStr)||"3_10".equals(keyStr)))
+			return;
 		ArrayList<VrsIndexDataBeanImp> arrResult = resultMap.get(keyStr);
 		if(arrResult==null)
 		{

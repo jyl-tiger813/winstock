@@ -1,0 +1,41 @@
+fjvr 出现高值 可以分为两种
+1.之前一直下跌，当天上涨，逆转为一个良好的买入时机
+2.当天继续下跌，趋势未逆转，继续观望
+
+jvr：
+1.当天继续上涨，可以考虑介入
+2，当天下跌考虑出货
+
+
+选股指标
+1. (fjvr>1000，及股票均价比前一天均价上涨幅度超过0.5%以上的
+
+改进方式
+1.1可以再增加一个均价对前一天收盘价的
+1.2周期按动态移动的半天来计算
+
+   SELECT *  FROM sse.index_vr_related_data4_10
+ WHERE trade_date >=(SELECT DATE_SUB(NOW(),INTERVAL 350 DAY) )  AND index_value > 1000 AND 
+ change_ratio >0.5
+ ORDER BY trade_date DESC 
+ 
+ 2. (fjvr>1000，及股票均价比前一天均价下跌幅度超过3%以上的
+
+改进方式
+1.1可以增加一个 收盘价与开盘价变动率（上涨以及上涨幅度较大的可以关注） 可以重点处理
+
+   SELECT *  FROM sse.index_vr_related_data4_10
+ WHERE trade_date >=(SELECT DATE_SUB(NOW(),INTERVAL 350 DAY) )  AND index_value > 1000 AND 
+ change_ratio >0.5
+ ORDER BY trade_date DESC 
+ 
+ 
+ 3.均价与 收盘价背离程度(百分比MACD），主要看长期趋势影响，均价背离，所有组合股票合计可以用来做大盘参考
+ 
+底部区域   均价比收盘价高（较长周期），说明是在打压吸货???
+3.1 需结合考虑近期成本 (近10个交易日)以及近期方差
+
+ 4. 均价方差
+ 
+ 
+ 

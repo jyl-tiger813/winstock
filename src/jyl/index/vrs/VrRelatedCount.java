@@ -1,15 +1,11 @@
 package jyl.index.vrs;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.sql.DataSource;
-
-import jyl.datacollect.sina.dailytrade.datafetcher.MainDispatcher;
 import jyl.datacollect.sina.dailytrade.datafetcher.bean.DailyTradeInfoBeanImp;
 import jyl.datacollect.sina.dailytrade.datafetcher.bean.StockNameBeanImp;
 import jyl.datacollect.sina.dailytrade.datafetcher.dao.DailyTradeInfoDaoImp;
@@ -33,8 +29,8 @@ public class VrRelatedCount {
 	Connection con = null;
 	VrsIndexDataDaoImp vrsDao = new VrsIndexDataDaoImp();
 	DailyTradeInfoDaoImp dailyTradeDao = new DailyTradeInfoDaoImp();
-	String baseQuerySql = "SELECT * FROM (SELECT * FROM stock_trade_daily_detail where stock_code = '";
-
+	//String baseQuerySql = "SELECT * FROM (SELECT * FROM stock_trade_daily_detail where stock_code = '";
+	String baseQuerySql = "SELECT * FROM stock_trade_daily_detail where stock_code = '";
 	/**
 	 * @param args
 	 */
@@ -46,7 +42,38 @@ public class VrRelatedCount {
 		VrRelatedCount vr = new VrRelatedCount();
 	//	vr.createTables();
 		vr.countFullPeriodData();
-		
+	//	vr.countDataIncrement();
+	}
+
+	/**
+	 * 
+	 */
+	private void countDataIncrement() {
+		// TODO Auto-generated method stub
+		StockNameDaoImp snDao = new StockNameDaoImp();
+		String querySql = "select * from sse.stocknames ";
+		Connection con = null;
+		//	con = ds.getConnection();
+			 String user = "root";
+			String password = "manager";
+			 String url = "jdbc:mysql://localhost:3306/sse?useUnicode=true&amp;characterEncoding=UTF-8";
+					
+			 try {
+				if(con==null||con.isClosed())			
+						con = DatabaseHelper.getAdConnectionByParams(url,user,password);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		ArrayList<StockNameBeanImp>  stockBeans = snDao.getBeans(querySql, con);
+		int i =0 ;
+		for(StockNameBeanImp bean : stockBeans)
+		{
+		i++;
+		System.out.println("i:"+i);
+		countOneStock(bean.getCodeId());
+		modifyStatus(bean);
+		}
 	}
 
 	/**
@@ -59,6 +86,10 @@ public class VrRelatedCount {
 		String baseSqlStr = "CREATE TABLE `index_vr_related_data?1` ( "+
   " `index_id` INT(11) DEFAULT NULL, "+
   " `stock_code` VARCHAR(20) DEFAULT NULL, "+
+  " `change_ratio` double DEFAULT NULL COMMENT '今天昨天收盘变化率', "+
+  " `ave_change_ratio` double DEFAULT NULL COMMENT '今天昨天均价变化率' , "+
+  " `change_ratio_close_begin` double DEFAULT NULL COMMENT '今天收盘 开盘', "+
+  " `change_ratio_avg_close` double DEFAULT NULL COMMENT '今天均价收盘', "+
 		" `stock_code_int` INT(10) DEFAULT NULL, "+
 		" `count_days` INT(11) DEFAULT NULL, "+
 		" `trade_date` DATETIME DEFAULT NULL, "+
@@ -100,6 +131,7 @@ public class VrRelatedCount {
 		// TODO Auto-generated method stub
 		StockNameDaoImp snDao = new StockNameDaoImp();
 		String querySql = "select * from sse.stocknames where isdealed <>1";
+		//String querySql = "select * from sse.stocknames where  code_id = '600559' ";
 		Connection con = null;
 		//	con = ds.getConnection();
 			 String user = "root";
@@ -149,8 +181,9 @@ public class VrRelatedCount {
 	private void countOneStock(String string) {
 		// TODO Auto-generated method stub
 		VrsModel vm = new VrsModel();
-		String querySql = baseQuerySql+string+"' and amount >0 ORDER BY trade_date DESC  LIMIT 100)t ORDER BY trade_date ";
-		 String user = "root";
+		//String querySql = baseQuerySql+string+"' and amount >0 ORDER BY trade_date DESC  LIMIT 100)t ORDER BY trade_date ";
+		String querySql = baseQuerySql+string+"' and amount >0 ORDER BY trade_date  "; 
+		String user = "root";
 			String password = "manager";
 			 String url = "jdbc:mysql://localhost:3306/sse?useUnicode=true&amp;characterEncoding=UTF-8";
 		try {
