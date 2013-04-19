@@ -9,9 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-
 import javax.sql.DataSource;
-
 import jyl.datacollect.sina.dailytrade.datafetcher.bean.DailyTradeInfoBeanImp;
 import jyl.datacollect.sina.dailytrade.datafetcher.bean.StockNameBeanImp;
 import jyl.datacollect.sina.dailytrade.datafetcher.dao.DailyTradeInfoDaoImp;

@@ -100,6 +100,22 @@
          <property name="testConnectionOnCheckout"><value>false</value></property>
          </bean>
          
+            <bean id="statistic_integrate_abstract" class="org.logicalcobwebs.proxool.ProxoolDataSource" lazy-init="true">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <!--<property name="driverUrl" value="jdbc:mysql://211.151.137.113:3306/rencai_dev?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="user" value="rencai_dev"/>
+        <property name="password" value="rencai_dev"/>
+        -->
+        <property name="driverUrl" value="jdbc:mysql://localhost:3306/statistic_integrate_abstract?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="user" value="root"/>
+        <property name="password" value="manager"/>
+        <property name="alias" value="incrementbak.sia"/>
+	    <property name="minimumConnectionCount" value="10"/>
+	    <property name="maximumConnectionCount" value="10"/>
+	    <property name="trace" value="true"/>
+    </bean>
+         
+   
          
 	<!-- web&admin端配置 ，目前采用一个数据库，将来拆分数据库后，再对数据源配置进行拆分	-->
 	 <bean id="dataSourceMySqlRenCai" class="org.logicalcobwebs.proxool.ProxoolDataSource" lazy-init="true">

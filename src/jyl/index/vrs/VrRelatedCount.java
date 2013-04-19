@@ -5,7 +5,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.sql.DataSource;
+
+import jyl.datacollect.sina.dailytrade.datafetcher.MainDispatcher;
 import jyl.datacollect.sina.dailytrade.datafetcher.bean.DailyTradeInfoBeanImp;
 import jyl.datacollect.sina.dailytrade.datafetcher.bean.StockNameBeanImp;
 import jyl.datacollect.sina.dailytrade.datafetcher.dao.DailyTradeInfoDaoImp;
@@ -29,20 +32,20 @@ public class VrRelatedCount {
 	Connection con = null;
 	VrsIndexDataDaoImp vrsDao = new VrsIndexDataDaoImp();
 	DailyTradeInfoDaoImp dailyTradeDao = new DailyTradeInfoDaoImp();
-	//String baseQuerySql = "SELECT * FROM (SELECT * FROM stock_trade_daily_detail where stock_code = '";
-	String baseQuerySql = "SELECT * FROM stock_trade_daily_detail where stock_code = '";
+	String baseQuerySql = "SELECT * FROM (SELECT * FROM stock_trade_daily_detail where stock_code = '";
+	//String baseQuerySql = "SELECT * FROM stock_trade_daily_detail where stock_code = '";
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	//	MainDispatcher disp = new MainDispatcher();
-	//	disp.fetchDatas();
+		MainDispatcher disp = new MainDispatcher();
+		disp.fetchDatas();
 	//计算全量
 		VrRelatedCount vr = new VrRelatedCount();
 	//	vr.createTables();
-		vr.countFullPeriodData();
-	//	vr.countDataIncrement();
+	//	vr.countFullPeriodData();
+		vr.countDataIncrement();
 	}
 
 	/**
@@ -181,8 +184,8 @@ public class VrRelatedCount {
 	private void countOneStock(String string) {
 		// TODO Auto-generated method stub
 		VrsModel vm = new VrsModel();
-		//String querySql = baseQuerySql+string+"' and amount >0 ORDER BY trade_date DESC  LIMIT 100)t ORDER BY trade_date ";
-		String querySql = baseQuerySql+string+"' and amount >0 ORDER BY trade_date  "; 
+		String querySql = baseQuerySql+string+"' and amount >0 ORDER BY trade_date DESC  LIMIT 25)t ORDER BY trade_date ";
+		//String querySql = baseQuerySql+string+"' and amount >0 ORDER BY trade_date  "; 
 		String user = "root";
 			String password = "manager";
 			 String url = "jdbc:mysql://localhost:3306/sse?useUnicode=true&amp;characterEncoding=UTF-8";

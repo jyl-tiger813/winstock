@@ -29,7 +29,26 @@ public class BaiduApiDataMergeGenerateJob {
 		//job.generateTimeDimension();
 		//job.generateSseStrockName();
 		//job.generateDailyTradeInfo();
-		job.generateIndex_Data();
+		//job.generateIndex_Data();
+		job.generateAbstractIndexValue();
+	}
+
+	/**
+	 * 
+	 */
+	private void generateAbstractIndexValue() {
+		// TODO Auto-generated method stub
+		GenerateParamBean param = new GenerateParamBean();
+		param.setPacakageName("com.baidu.rencai.bi.abtest.dataload");
+		param.setBaseDircStr("D:/wk1/rc.bi.temp/src/main/java/");
+		param.setBaseClassName("AbstractIndexValue");
+		
+		//param.setDatasourceName("sse");
+		param.setSqlStr("SELECT * FROM  statistic_integrate_abstract.temp1_value_abstract_sum");
+		//param.setSqlStr(sqlStr);
+		CodeGenerateDispatcher dispatcher = new CodeGenerateDispatcher();
+		dispatcher.setParamBean(param);
+		dispatcher.doGenerate();
 	}
 
 	/**

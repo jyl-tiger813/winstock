@@ -140,6 +140,27 @@ public class DateTimeUtil {
 		
 	}
 
+	/*
+	 * 通过日期字符串返回calendar对象
+	 * "20130410"
+	 * 日期格式2012-02-12R
+	 */
+	public static  Calendar getCalendarZeroBy8LStr(String  day) {
+		// 返回用于数据库查询的日期时间字符串
+		Calendar cal = Calendar.getInstance();
+		int year = Integer.parseInt(day.substring(0,4));
+		int month = Integer.parseInt(day.substring(4,6))-1;
+		int date = Integer.parseInt(day.substring(6,8));
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.MONTH, month);
+		cal.set(Calendar.DAY_OF_MONTH, date);
+		cal.set(Calendar.HOUR_OF_DAY,0);
+		cal.set(Calendar.MINUTE,0);
+		cal.set(Calendar.MILLISECOND,0);
+		cal.set(Calendar.SECOND, 0);
+		return cal;
+	}
+	
 	public static java.util.Date parseTimeStr(String fromTimeStr) {
 		// TODO Auto-generated method stub
 		return null;
