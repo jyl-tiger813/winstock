@@ -30,7 +30,25 @@ public class BaiduApiDataMergeGenerateJob {
 		//job.generateSseStrockName();
 		//job.generateDailyTradeInfo();
 		//job.generateIndex_Data();
-		job.generateAbstractIndexValue();
+		//job.generateAbstractIndexValue();
+		job.generatePriceVolumn();
+	}
+
+	/**
+	 * 
+	 */
+	private void generatePriceVolumn() {
+		// TODO Auto-generated method stub
+		GenerateParamBean param = new GenerateParamBean();
+		param.setPacakageName("jyl.index.vrs.pricevolumn");
+		param.setBaseDircStr("D:/wk3/winStock/src/");//D:\wk3\winstock\src\jyl
+		param.setBaseClassName("PriceVolumnIndex");
+		param.setDatasourceName("sse");
+		param.setSqlStr("SELECT * FROM  sse.pirce_volumn_related_index");
+		//param.setSqlStr(sqlStr);
+		CodeGenerateDispatcher dispatcher = new CodeGenerateDispatcher();
+		dispatcher.setParamBean(param);
+		dispatcher.doGenerate();
 	}
 
 	/**
@@ -39,12 +57,11 @@ public class BaiduApiDataMergeGenerateJob {
 	private void generateAbstractIndexValue() {
 		// TODO Auto-generated method stub
 		GenerateParamBean param = new GenerateParamBean();
-		param.setPacakageName("com.baidu.rencai.bi.abtest.dataload");
-		param.setBaseDircStr("D:/wk1/rc.bi.temp/src/main/java/");
-		param.setBaseClassName("AbstractIndexValue");
-		
-		//param.setDatasourceName("sse");
-		param.setSqlStr("SELECT * FROM  statistic_integrate_abstract.temp1_value_abstract_sum");
+		param.setPacakageName("jyl.index.vrs");
+		param.setBaseDircStr("D:/workspace/winStock/src/");
+		param.setBaseClassName("VrsIndexData");
+		param.setDatasourceName("sse");
+		param.setSqlStr("SELECT * FROM  sse.index_vr_related_data");
 		//param.setSqlStr(sqlStr);
 		CodeGenerateDispatcher dispatcher = new CodeGenerateDispatcher();
 		dispatcher.setParamBean(param);

@@ -110,7 +110,7 @@
         <property name="user" value="root"/>
         <property name="password" value="manager"/>
         <property name="alias" value="incrementbak.sia"/>
-	    <property name="minimumConnectionCount" value="1"/>
+	    <property name="minimumConnectionCount" value="10"/>
 	    <property name="maximumConnectionCount" value="10"/>
 	    <property name="trace" value="true"/>
     </bean>

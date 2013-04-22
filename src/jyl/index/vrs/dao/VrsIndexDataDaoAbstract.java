@@ -87,7 +87,7 @@ try {
 	excuteSqlStrsSustainCon( sqlStrs, con);
 } catch (SQLException e) {
 e.printStackTrace();
-System.out.println("sqlStrs:"+sqlStrs);
+System.out.println("sqlStrs:"+sqlStrs.substring(30));
 }}
 
 

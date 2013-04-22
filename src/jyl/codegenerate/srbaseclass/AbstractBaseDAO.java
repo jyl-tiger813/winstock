@@ -8,7 +8,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.apache.log4j.Logger;
+
+import jyl.index.vrs.bean.VrsIndexDataBeanImp;
 import jyl.util.DateTimeUtil;
+import jyl.util.Log4jLoader;
 
 
 /**
@@ -27,6 +31,7 @@ public class AbstractBaseDAO {
 	 * @param values2
 	 * @throws SQLException 
 	 */
+	static Logger logger = Logger.getLogger(AbstractBaseDAO.class);
 	 protected void excutePreparedParams(String sqlStr, ArrayList<Object> values,Connection con) throws SQLException {
 		PreparedStatement preS = con.prepareStatement(sqlStr);
 		int i = 1;
@@ -75,8 +80,10 @@ public class AbstractBaseDAO {
 				statement.execute(sqlStr);
 				 }catch(Exception e)
 				 {
-					 e.printStackTrace();
-					 System.out.println("sqlStr:"+sqlStr);
+					// e.printStackTrace();
+					 logger.error("errorsql",e);
+					 logger.error("sqlStr:"+sqlStr);
+					// System.out.println("sqlStr:"+sqlStr.substring(30));
 				 }finally{
 					 if(statement!=null)
 						 statement.close();
@@ -125,7 +132,7 @@ public class AbstractBaseDAO {
 				 return "'"+result+"'";
 				 }else
 				 {
-					 return "'NULL'";
+					 return "NULL";
 				 }
 			 }
 			 
@@ -135,4 +142,7 @@ public class AbstractBaseDAO {
 				 String result = convertObj2string(tempInt);
 				 System.out.println("result:"+result);
 			 }
+
+
+			
 }
