@@ -18,7 +18,7 @@ public abstract class PriceVolumnIndexDaoAbstract extends AbstractBaseDAO
 
 
 public void save(PriceVolumnIndexBeanImp bean,Connection con)
-{String sqlStr = "insert into sse.pirce_volumn_related_index(id,stock_code,trade_date,avg_2close_ratio_bef_1,avg_2close_ratio_bef_3,avg_2close_ratio_bef_5,avg_2close_ratio_bef_10,avg_2close_ratio_bef_20,avg_2close_ratio_bef_60,avg_2close_ratio_bef_120,avg_cost_bef_1_today_ratio,avg_cost_bef_3_today_ratio,avg_cost_bef_5_today_ratio,avg_cost_bef_10_today_ratio,avg_cost_bef_20_today_ratio,avg_cost_bef_60_today_ratio,avg_cost_bef_120_today_ratio,avg_cost_after_1_today_ratio,avg_cost_after_3_today_ratio,avg_cost_after_5_today_ratio,avg_cost_after_10_today_ratio,avg_cost_after_20_today_ratio,avg_cost_after_60_today_ratio,avg_cost_after_120_today_ratio,view_real_avg_ratio_before_1,view_real_avg_ratio_before_3,view_real_avg_ratio_before_5,view_real_avg_ratio_before_10,view_real_avg_ratio_before_20,view_real_avg_ratio_before_60,view_real_avg_ratio_before_120,ts)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+{String sqlStr = "replace into sse.pirce_volumn_related_index(id,stock_code,trade_date,avg_2close_ratio_bef_1,avg_2close_ratio_bef_3,avg_2close_ratio_bef_5,avg_2close_ratio_bef_10,avg_2close_ratio_bef_20,avg_2close_ratio_bef_60,avg_2close_ratio_bef_120,avg_cost_bef_1_today_ratio,avg_cost_bef_3_today_ratio,avg_cost_bef_5_today_ratio,avg_cost_bef_10_today_ratio,avg_cost_bef_20_today_ratio,avg_cost_bef_60_today_ratio,avg_cost_bef_120_today_ratio,avg_cost_after_1_today_ratio,avg_cost_after_3_today_ratio,avg_cost_after_5_today_ratio,avg_cost_after_10_today_ratio,avg_cost_after_20_today_ratio,avg_cost_after_60_today_ratio,avg_cost_after_120_today_ratio,view_real_avg_ratio_before_1,view_real_avg_ratio_before_3,view_real_avg_ratio_before_5,view_real_avg_ratio_before_10,view_real_avg_ratio_before_20,view_real_avg_ratio_before_60,view_real_avg_ratio_before_120,volumeReduceChange_30_60,volumeReduceChange_50_100,volumeReduceChange_100_300,ts)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 ArrayList<Object> values = new ArrayList<Object> ();
 Object objId = bean.getId();
   values.add(objId);
@@ -82,6 +82,12 @@ Object objViewRealAvgRatioBefore60 = bean.getViewRealAvgRatioBefore60();
   values.add(objViewRealAvgRatioBefore60);
 Object objViewRealAvgRatioBefore120 = bean.getViewRealAvgRatioBefore120();
   values.add(objViewRealAvgRatioBefore120);
+Object objVolumeReduceChange3060 = bean.getVolumeReduceChange3060();
+  values.add(objVolumeReduceChange3060);
+Object objVolumeReduceChange50100 = bean.getVolumeReduceChange50100();
+  values.add(objVolumeReduceChange50100);
+Object objVolumeReduceChange100300 = bean.getVolumeReduceChange100300();
+  values.add(objVolumeReduceChange100300);
 Object objTs = bean.getTs();
   values.add(objTs);
 
@@ -166,13 +172,19 @@ Object objViewRealAvgRatioBefore60 = bean.getViewRealAvgRatioBefore60();
 String ViewRealAvgRatioBefore60valueStr = convertObj2string(objViewRealAvgRatioBefore60); 
 Object objViewRealAvgRatioBefore120 = bean.getViewRealAvgRatioBefore120();
 String ViewRealAvgRatioBefore120valueStr = convertObj2string(objViewRealAvgRatioBefore120); 
+Object objVolumeReduceChange3060 = bean.getVolumeReduceChange3060();
+String VolumeReduceChange3060valueStr = convertObj2string(objVolumeReduceChange3060); 
+Object objVolumeReduceChange50100 = bean.getVolumeReduceChange50100();
+String VolumeReduceChange50100valueStr = convertObj2string(objVolumeReduceChange50100); 
+Object objVolumeReduceChange100300 = bean.getVolumeReduceChange100300();
+String VolumeReduceChange100300valueStr = convertObj2string(objVolumeReduceChange100300); 
 Object objTs = bean.getTs();
 String TsvalueStr = convertObj2string(objTs); 
 if("".equals(sqlStrs))
-sqlStrs = "insert into sse.pirce_volumn_related_index(stock_code,trade_date,avg_2close_ratio_bef_1,avg_2close_ratio_bef_3,avg_2close_ratio_bef_5,avg_2close_ratio_bef_10,avg_2close_ratio_bef_20,avg_2close_ratio_bef_60,avg_2close_ratio_bef_120,avg_cost_bef_1_today_ratio,avg_cost_bef_3_today_ratio,avg_cost_bef_5_today_ratio,avg_cost_bef_10_today_ratio,avg_cost_bef_20_today_ratio,avg_cost_bef_60_today_ratio,avg_cost_bef_120_today_ratio,avg_cost_after_1_today_ratio,avg_cost_after_3_today_ratio,avg_cost_after_5_today_ratio,avg_cost_after_10_today_ratio,avg_cost_after_20_today_ratio,avg_cost_after_60_today_ratio,avg_cost_after_120_today_ratio,view_real_avg_ratio_before_1,view_real_avg_ratio_before_3,view_real_avg_ratio_before_5,view_real_avg_ratio_before_10,view_real_avg_ratio_before_20,view_real_avg_ratio_before_60,view_real_avg_ratio_before_120)values("+StockCodevalueStr+","+TradeDatevalueStr+","+Avg2closeRatioBef1valueStr+","+Avg2closeRatioBef3valueStr+","+Avg2closeRatioBef5valueStr+","+Avg2closeRatioBef10valueStr+","+Avg2closeRatioBef20valueStr+","+Avg2closeRatioBef60valueStr+","+Avg2closeRatioBef120valueStr+","+AvgCostBef1TodayRatiovalueStr+","+AvgCostBef3TodayRatiovalueStr+","+AvgCostBef5TodayRatiovalueStr+","+AvgCostBef10TodayRatiovalueStr+","+AvgCostBef20TodayRatiovalueStr+","+AvgCostBef60TodayRatiovalueStr+","+AvgCostBef120TodayRatiovalueStr+","+AvgCostAfter1TodayRatiovalueStr+","+AvgCostAfter3TodayRatiovalueStr+","+AvgCostAfter5TodayRatiovalueStr+","+AvgCostAfter10TodayRatiovalueStr+","+AvgCostAfter20TodayRatiovalueStr+","+AvgCostAfter60TodayRatiovalueStr+","+AvgCostAfter120TodayRatiovalueStr+","+ViewRealAvgRatioBefore1valueStr+","+ViewRealAvgRatioBefore3valueStr+","+ViewRealAvgRatioBefore5valueStr+","+ViewRealAvgRatioBefore10valueStr+","+ViewRealAvgRatioBefore20valueStr+","+ViewRealAvgRatioBefore60valueStr+","+ViewRealAvgRatioBefore120valueStr+")";
+sqlStrs = "replace into sse.pirce_volumn_related_index(stock_code,trade_date,avg_2close_ratio_bef_1,avg_2close_ratio_bef_3,avg_2close_ratio_bef_5,avg_2close_ratio_bef_10,avg_2close_ratio_bef_20,avg_2close_ratio_bef_60,avg_2close_ratio_bef_120,avg_cost_bef_1_today_ratio,avg_cost_bef_3_today_ratio,avg_cost_bef_5_today_ratio,avg_cost_bef_10_today_ratio,avg_cost_bef_20_today_ratio,avg_cost_bef_60_today_ratio,avg_cost_bef_120_today_ratio,avg_cost_after_1_today_ratio,avg_cost_after_3_today_ratio,avg_cost_after_5_today_ratio,avg_cost_after_10_today_ratio,avg_cost_after_20_today_ratio,avg_cost_after_60_today_ratio,avg_cost_after_120_today_ratio,view_real_avg_ratio_before_1,view_real_avg_ratio_before_3,view_real_avg_ratio_before_5,view_real_avg_ratio_before_10,view_real_avg_ratio_before_20,view_real_avg_ratio_before_60,view_real_avg_ratio_before_120,volumeReduceChange_30_60,volumeReduceChange_50_100,volumeReduceChange_100_300)values("+StockCodevalueStr+","+TradeDatevalueStr+","+Avg2closeRatioBef1valueStr+","+Avg2closeRatioBef3valueStr+","+Avg2closeRatioBef5valueStr+","+Avg2closeRatioBef10valueStr+","+Avg2closeRatioBef20valueStr+","+Avg2closeRatioBef60valueStr+","+Avg2closeRatioBef120valueStr+","+AvgCostBef1TodayRatiovalueStr+","+AvgCostBef3TodayRatiovalueStr+","+AvgCostBef5TodayRatiovalueStr+","+AvgCostBef10TodayRatiovalueStr+","+AvgCostBef20TodayRatiovalueStr+","+AvgCostBef60TodayRatiovalueStr+","+AvgCostBef120TodayRatiovalueStr+","+AvgCostAfter1TodayRatiovalueStr+","+AvgCostAfter3TodayRatiovalueStr+","+AvgCostAfter5TodayRatiovalueStr+","+AvgCostAfter10TodayRatiovalueStr+","+AvgCostAfter20TodayRatiovalueStr+","+AvgCostAfter60TodayRatiovalueStr+","+AvgCostAfter120TodayRatiovalueStr+","+ViewRealAvgRatioBefore1valueStr+","+ViewRealAvgRatioBefore3valueStr+","+ViewRealAvgRatioBefore5valueStr+","+ViewRealAvgRatioBefore10valueStr+","+ViewRealAvgRatioBefore20valueStr+","+ViewRealAvgRatioBefore60valueStr+","+ViewRealAvgRatioBefore120valueStr+","+VolumeReduceChange3060valueStr+","+VolumeReduceChange50100valueStr+","+VolumeReduceChange100300valueStr+")";
 else
 
-sqlStrs = sqlStrs+",("+StockCodevalueStr+","+TradeDatevalueStr+","+Avg2closeRatioBef1valueStr+","+Avg2closeRatioBef3valueStr+","+Avg2closeRatioBef5valueStr+","+Avg2closeRatioBef10valueStr+","+Avg2closeRatioBef20valueStr+","+Avg2closeRatioBef60valueStr+","+Avg2closeRatioBef120valueStr+","+AvgCostBef1TodayRatiovalueStr+","+AvgCostBef3TodayRatiovalueStr+","+AvgCostBef5TodayRatiovalueStr+","+AvgCostBef10TodayRatiovalueStr+","+AvgCostBef20TodayRatiovalueStr+","+AvgCostBef60TodayRatiovalueStr+","+AvgCostBef120TodayRatiovalueStr+","+AvgCostAfter1TodayRatiovalueStr+","+AvgCostAfter3TodayRatiovalueStr+","+AvgCostAfter5TodayRatiovalueStr+","+AvgCostAfter10TodayRatiovalueStr+","+AvgCostAfter20TodayRatiovalueStr+","+AvgCostAfter60TodayRatiovalueStr+","+AvgCostAfter120TodayRatiovalueStr+","+ViewRealAvgRatioBefore1valueStr+","+ViewRealAvgRatioBefore3valueStr+","+ViewRealAvgRatioBefore5valueStr+","+ViewRealAvgRatioBefore10valueStr+","+ViewRealAvgRatioBefore20valueStr+","+ViewRealAvgRatioBefore60valueStr+","+ViewRealAvgRatioBefore120valueStr+")";}
+sqlStrs = sqlStrs+",("+StockCodevalueStr+","+TradeDatevalueStr+","+Avg2closeRatioBef1valueStr+","+Avg2closeRatioBef3valueStr+","+Avg2closeRatioBef5valueStr+","+Avg2closeRatioBef10valueStr+","+Avg2closeRatioBef20valueStr+","+Avg2closeRatioBef60valueStr+","+Avg2closeRatioBef120valueStr+","+AvgCostBef1TodayRatiovalueStr+","+AvgCostBef3TodayRatiovalueStr+","+AvgCostBef5TodayRatiovalueStr+","+AvgCostBef10TodayRatiovalueStr+","+AvgCostBef20TodayRatiovalueStr+","+AvgCostBef60TodayRatiovalueStr+","+AvgCostBef120TodayRatiovalueStr+","+AvgCostAfter1TodayRatiovalueStr+","+AvgCostAfter3TodayRatiovalueStr+","+AvgCostAfter5TodayRatiovalueStr+","+AvgCostAfter10TodayRatiovalueStr+","+AvgCostAfter20TodayRatiovalueStr+","+AvgCostAfter60TodayRatiovalueStr+","+AvgCostAfter120TodayRatiovalueStr+","+ViewRealAvgRatioBefore1valueStr+","+ViewRealAvgRatioBefore3valueStr+","+ViewRealAvgRatioBefore5valueStr+","+ViewRealAvgRatioBefore10valueStr+","+ViewRealAvgRatioBefore20valueStr+","+ViewRealAvgRatioBefore60valueStr+","+ViewRealAvgRatioBefore120valueStr+","+VolumeReduceChange3060valueStr+","+VolumeReduceChange50100valueStr+","+VolumeReduceChange100300valueStr+")";}
 try {
 	excuteSqlStrsSustainCon( sqlStrs, con);
 } catch (SQLException e) {
@@ -222,6 +234,9 @@ public ArrayList<PriceVolumnIndexBeanImp>  getBeans(String  querySql,Connection 
 		bean.setViewRealAvgRatioBefore20(rs.getDouble("view_real_avg_ratio_before_20"));
 		bean.setViewRealAvgRatioBefore60(rs.getDouble("view_real_avg_ratio_before_60"));
 		bean.setViewRealAvgRatioBefore120(rs.getDouble("view_real_avg_ratio_before_120"));
+		bean.setVolumeReduceChange3060(rs.getDouble("volumeReduceChange_30_60"));
+		bean.setVolumeReduceChange50100(rs.getDouble("volumeReduceChange_50_100"));
+		bean.setVolumeReduceChange100300(rs.getDouble("volumeReduceChange_100_300"));
 		bean.setTs(rs.getTimestamp("ts"));
 
 		result.add(bean);

@@ -156,8 +156,11 @@ public  class CodeGenerateDispatcher {
 	   implementDaoParam.setPacakageName(packageName+CodeGenerateConstant.daoPackage);
 	   ImplementDaoGenerator implementDaoGenerator = new ImplementDaoGenerator();
 	   implementDaoGenerator.setParamBean(implementDaoParam);
+	   if(paramBean.isFisrtTimeGene())
+	   {
 	   implementDaoGenerator.setIfFirstGenerate(ifFirstGenerate);
 	   implementDaoGenerator.generateJavaFile();
+	   }
 	   
 	}
 

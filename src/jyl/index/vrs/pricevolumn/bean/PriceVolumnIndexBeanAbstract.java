@@ -38,6 +38,9 @@ private  Double ViewRealAvgRatioBefore10;
 private  Double ViewRealAvgRatioBefore20;
 private  Double ViewRealAvgRatioBefore60;
 private  Double ViewRealAvgRatioBefore120;
+private  Double VolumeReduceChange3060;
+private  Double VolumeReduceChange50100;
+private  Double VolumeReduceChange100300;
 private  Timestamp Ts;
 
 public   void setId(long Id)
@@ -348,6 +351,36 @@ public   void setViewRealAvgRatioBefore120(Double ViewRealAvgRatioBefore120)
 public  Double getViewRealAvgRatioBefore120()
 		{
 				return this.ViewRealAvgRatioBefore120;
+		}
+
+public   void setVolumeReduceChange3060(Double VolumeReduceChange3060)
+		{
+				this.VolumeReduceChange3060 = VolumeReduceChange3060;
+		}
+
+public  Double getVolumeReduceChange3060()
+		{
+				return this.VolumeReduceChange3060;
+		}
+
+public   void setVolumeReduceChange50100(Double VolumeReduceChange50100)
+		{
+				this.VolumeReduceChange50100 = VolumeReduceChange50100;
+		}
+
+public  Double getVolumeReduceChange50100()
+		{
+				return this.VolumeReduceChange50100;
+		}
+
+public   void setVolumeReduceChange100300(Double VolumeReduceChange100300)
+		{
+				this.VolumeReduceChange100300 = VolumeReduceChange100300;
+		}
+
+public  Double getVolumeReduceChange100300()
+		{
+				return this.VolumeReduceChange100300;
 		}
 
 public   void setTs(Timestamp Ts)

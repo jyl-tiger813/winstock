@@ -45,6 +45,8 @@ public class BaiduApiDataMergeGenerateJob {
 		param.setBaseClassName("PriceVolumnIndex");
 		param.setDatasourceName("sse");
 		param.setSqlStr("SELECT * FROM  sse.pirce_volumn_related_index");
+		//如果是第一次生成，需使用以下代码
+		//param.setFisrtTimeGene(true);
 		//param.setSqlStr(sqlStr);
 		CodeGenerateDispatcher dispatcher = new CodeGenerateDispatcher();
 		dispatcher.setParamBean(param);

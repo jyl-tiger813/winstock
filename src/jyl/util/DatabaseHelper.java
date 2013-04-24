@@ -577,4 +577,25 @@ public class DatabaseHelper {
 		this.defaultCon = con;
 		
 	}
+	 /**
+	  * 
+	  * 执行多条插入语句sql(维持数据库连接)
+		 * @param sqlStr
+		 * @param values2
+		 * @throws SQLException 
+		 */
+		 public static void excuteSqlStrsSustainCon(String sqlStr,Connection con) throws SQLException {
+			 Statement statement =null;
+			 try{
+				 statement = con.createStatement();
+			statement.execute(sqlStr);
+			 }catch(Exception e)
+			 {
+				 e.printStackTrace();
+				 System.out.println("sqlStr:"+sqlStr);
+			 }finally{
+				 if(statement!=null)
+					 statement.close();
+			 }
+		}
 }

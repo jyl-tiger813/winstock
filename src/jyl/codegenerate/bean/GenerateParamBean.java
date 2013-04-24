@@ -10,6 +10,13 @@ package jyl.codegenerate.bean;
  * @version 
  */
 public class GenerateParamBean {
+	boolean isFisrtTimeGene = false;//默认为非第一次生成（避免错误操作覆盖）
+	public boolean isFisrtTimeGene() {
+		return isFisrtTimeGene;
+	}
+	public void setFisrtTimeGene(boolean isFisrtTimeGene) {
+		this.isFisrtTimeGene = isFisrtTimeGene;
+	}
 	public String getPacakageName() {
 		return pacakageName;
 	}

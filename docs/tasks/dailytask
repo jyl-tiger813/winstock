@@ -76,6 +76,22 @@ kettle 转化数据
 -- 2013.04.22
 后续N日均价变动的增量数据得特殊处理(update)
 
-还需增加一个大盘量增和大盘量缩指标
+还需增加一个大盘量增和大盘量缩
+
+先做简单移动平均
+
+
+-- 2013.04.23
+
+重新生成代码后需要修改部分
+
+PriceVolumnIndexDaoAbstract
+
+方法saveBeans中修改sql语句,去掉final中关闭连接的代码
+
+生成代码时不覆盖实现类
+把方法excuteSqlStrs( sqlStrs, con)
+替换成excuteSqlStrsSustainCon
+把sql语句中的insert改成replace
 
 

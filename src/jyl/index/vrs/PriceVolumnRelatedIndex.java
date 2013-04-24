@@ -6,8 +6,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.log4j.Logger;
+import java.util.TreeMap;
 
 import jyl.datacollect.sina.dailytrade.datafetcher.bean.DailyTradeInfoBeanImp;
 import jyl.datacollect.sina.dailytrade.datafetcher.dao.DailyTradeInfoDaoImp;
@@ -17,6 +16,8 @@ import jyl.index.vrs.pricevolumn.bean.PriceVolumnIndexBeanImp;
 import jyl.index.vrs.pricevolumn.dao.PriceVolumnIndexDaoImp;
 import jyl.util.DatabaseHelper;
 import jyl.util.Log4jLoader;
+
+import org.apache.log4j.Logger;
 
 /**
  * 类描述：   
@@ -49,7 +50,6 @@ public class PriceVolumnRelatedIndex extends IndexCounterAbstract {
 		System.out.println("price:"+price);*/
 	}
 
-	
 
 	/* (non-Javadoc)
 	 * @see jyl.index.vrs.bo.IndexCounterAbstract#countOneStock(java.lang.String)
@@ -267,7 +267,6 @@ public class PriceVolumnRelatedIndex extends IndexCounterAbstract {
 				
 			}
 			
-			//TODO bean设置各项指标值(大量)
 			
 			resultArr.add(bean);
 			map.put(bean.getTradeDate(), bean);
@@ -275,8 +274,123 @@ public class PriceVolumnRelatedIndex extends IndexCounterAbstract {
 			
 			//PriceVolumnIndexBeanImp
 		}
+		//TODO  jyl_now bean设置各项指标值(大盘量缩)
 				//TODO 创建入库数据(把map中的数据转化存储到array中)
-	
+		/*
+		 * 大盘量缩需单独计算
+		 * 1.计算MA值（30）
+		 * 2.计算60范围内比值（最大值只需逐个比较即可得到）
+		 *   2.1 找到最大值
+		 * 3.需要考虑如果减少计算量
+		 * 4.多种组合,(30,60),(50,100)等
+		 */
+		TreeMap<Integer,Long> simpleMoveAvgValueMap = new TreeMap<Integer,Long>();
+		int divValue = 1000;
+		TreeMap<Integer,ArrayList<VolumnSimpleAvgValue>> simpleMoveAvgValueDays = new TreeMap<Integer,ArrayList<VolumnSimpleAvgValue>>();
+		for(int i=1;i<arrs.size();i++)
+		{
+			arrs.get(i);
+			long currentvolumn = arrs.get(i).getVolumn();
+			if(i==1)
+			{
+			if(currentvolumn<divValue)
+				divValue = 1;
+			}
+			currentvolumn = currentvolumn/divValue;
+			for(volumnSizeChangeIndex oneIndex : volumnSizeChangeIndex.values())
+			{
+				//增加值
+				int maDays = oneIndex.getMaDays();
+				Long value = simpleMoveAvgValueMap.get(maDays);
+				if(value ==null)
+					simpleMoveAvgValueMap.put(maDays, currentvolumn);
+				else
+				{
+					simpleMoveAvgValueMap.put(maDays, value+currentvolumn);
+				}
+				
+				//减少值
+				if(i>maDays&&value!=null)
+				{
+					value = simpleMoveAvgValueMap.get(maDays);
+					DailyTradeInfoBeanImp periodFistDay = arrs.get(i-maDays);
+					simpleMoveAvgValueMap.put(maDays, value-(periodFistDay.getVolumn()/divValue));
+
+				}
+				 
+				//存入到 simpleMoveAvgValueDays 中
+				ArrayList<VolumnSimpleAvgValue> oneIntervalArrValue = simpleMoveAvgValueDays.get(maDays);
+				if(oneIntervalArrValue == null)
+				{
+					oneIntervalArrValue = new ArrayList<VolumnSimpleAvgValue>();
+					simpleMoveAvgValueDays.put(maDays, oneIntervalArrValue);
+				}
+			     if(i>maDays)
+				{
+			    //设置值
+				VolumnSimpleAvgValue  volumnSimpleAvgValue = new VolumnSimpleAvgValue();
+				volumnSimpleAvgValue.setTradeDate( arrs.get(i).getTradeDate());
+				volumnSimpleAvgValue.setVolumn(simpleMoveAvgValueMap.get(maDays));
+				oneIntervalArrValue.add(volumnSimpleAvgValue);
+				}
+			}
+		}
+		
+		//计算最终值
+		
+		for(volumnSizeChangeIndex oneIndex : volumnSizeChangeIndex.values())
+		{
+			//程序简化处理，后续可进行优化
+			int mDays = oneIndex.getMaDays();
+			int compareDays = oneIndex.getCompareDays();
+			ArrayList<VolumnSimpleAvgValue> oneIntervalArrValue = simpleMoveAvgValueDays.get(mDays);
+			int intervalMaxDataPos = 0;
+			long maxDataValue =0;
+			for(int i=0;i<oneIntervalArrValue.size();i++)
+			{
+				long volumnValue = oneIntervalArrValue.get(i).getVolumn();
+				if(volumnValue>maxDataValue)
+				{
+					maxDataValue = volumnValue;
+					intervalMaxDataPos = i;
+				}
+				else
+				{
+					//判断是否要重新查找最大值
+					if(intervalMaxDataPos<(i-compareDays))//当前最大值所在位置在筛选区间范围之外
+					{
+						maxDataValue =0;
+						for(int j = intervalMaxDataPos+1;j<i;j++)
+						{
+							long volumnValueJ = oneIntervalArrValue.get(j).getVolumn();
+							if(volumnValueJ>maxDataValue)
+							{
+								maxDataValue = volumnValueJ;
+								intervalMaxDataPos = j;
+							}
+						}
+					}
+				}
+				//volumeReduceChange_30_60
+				String methodName = "setVolumeReduceChange"+mDays+""+compareDays;
+			// volumnValue数值溢出
+				if(i>compareDays&&volumnValue> exp)
+				{
+					Double volumeReduceChange = maxDataValue*1.0d/volumnValue;
+					Timestamp tmp =  oneIntervalArrValue.get(i).getTradeDate();
+					PriceVolumnIndexBeanImp beanBeforeN = map.get(tmp);
+					//TODO 需要使用反射来设置值(大盘量缩)
+					if(volumeReduceChange!=null){
+					Class clazz = beanBeforeN.getClass().getSuperclass();
+					Method mt = clazz.getDeclaredMethod(methodName,Double.class); 
+					mt.invoke(beanBeforeN, volumeReduceChange);
+					}
+				}
+				
+			}
+		}
+		
+		
 		return resultArr;
 	}
 
@@ -291,5 +405,47 @@ public class PriceVolumnRelatedIndex extends IndexCounterAbstract {
 		dailyTradeDao = new DailyTradeInfoDaoImp();
 		vrsDao = new PriceVolumnIndexDaoImp();
 	}
+	
+	
 
+}
+enum volumnSizeChangeIndex
+{
+	index30_60(30,60),index50_100(50,100),index100_300(100,300);
+	public int getMaDays() {
+		return maDays;
+	}
+	public int getCompareDays() {
+		return compareDays;
+	}
+	public void setMaDays(int maDays) {
+		this.maDays = maDays;
+	}
+	public void setCompareDays(int compareDays) {
+		this.compareDays = compareDays;
+	}
+	volumnSizeChangeIndex(Integer maDays,Integer compareDays){
+		this.maDays = maDays;
+		this.compareDays = compareDays;
+	};
+	int maDays;
+	int compareDays;
+}
+
+class VolumnSimpleAvgValue{
+	private long volumn;
+	private Timestamp tradeDate;
+	public long getVolumn() {
+		return volumn;
+	}
+	public Timestamp getTradeDate() {
+		return tradeDate;
+	}
+	public void setVolumn(long volumn) {
+		this.volumn = volumn;
+	}
+	public void setTradeDate(Timestamp tradeDate) {
+		this.tradeDate = tradeDate;
+	}
+	
 }
